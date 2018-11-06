@@ -1,8 +1,6 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
-const resolve = require('resolve');
 const webpack = require('webpack');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -15,9 +13,6 @@ const getClientEnvironment = require('./env');
 const paths = require('./paths');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
-const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
-
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -27,10 +22,9 @@ const publicPath = '/';
 // Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
 const publicUrl = '';
 // Get environment variables to inject into our app.
-const env = getClientEnvironment(publicUrl);
+const env = getClientEnvironment.target;
 
-// Check if TypeScript is setup
-const useTypeScript = fs.existsSync(paths.appTsConfig);
+
 
 // style files regexes
 const cssRegex = /\.css$/;
@@ -72,6 +66,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
   }
   return loaders;
 };
+
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
@@ -133,23 +128,24 @@ module.exports = {
     // We placed these paths second because we want `node_modules` to "win"
     // if there are any conflicts. This matches Node resolution mechanism.
     // https://github.com/facebook/create-react-app/issues/253
-    modules: ['node_modules'].concat(
-      // It is guaranteed to exist because we tweak it in `env.js`
-      process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
-    ),
+    // modules: ['node_modules'].concat(
+    //   // It is guaranteed to exist because we tweak it in `env.js`
+    //   // process.env.NODE_PATH.split(path.delimiter).filter(Boolean),
+    // ),
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebook/create-react-app/issues/290
     // `web` extension prefixes have been added for better support
     // for React Native Web.
-    extensions: paths.moduleFileExtensions
-      .map(ext => `.${ext}`)
-      .filter(ext => useTypeScript || !ext.includes('ts')),
+    extensions: ['.mjs', '.web.js', '.js', '.json', '.web.jsx', '.jsx'],
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
+      '@app': path.resolve('./src'),
+      '@app-components': path.resolve('./src/components'),
+      '@app-routes': path.resolve('./src/routes')
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -186,7 +182,7 @@ module.exports = {
             options: {
               formatter: require.resolve('react-dev-utils/eslintFormatter'),
               eslintPath: require.resolve('eslint'),
-              
+
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -212,14 +208,14 @@ module.exports = {
           // Process application JS with Babel.
           // The preset includes JSX, Flow, and some ESnext features.
           {
-            test: /\.(js|mjs|jsx|ts|tsx)$/,
+            test: /\.(js|mjs|jsx)$/,
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-              customize: require.resolve(
-                'babel-preset-react-app/webpack-overrides'
-              ),
-              
+              // customize: require.resolve(
+              //   'babel-preset-react-app/webpack-overrides'
+              // ),
+
               plugins: [
                 [
                   require.resolve('babel-plugin-named-asset-import'),
@@ -251,15 +247,15 @@ module.exports = {
               configFile: false,
               compact: false,
               presets: [
-                [
-                  require.resolve('babel-preset-react-app/dependencies'),
-                  { helpers: true },
-                ],
+                // [
+                //   // require.resolve('babel-preset-react-app/dependencies'),
+                //   { helpers: true },
+                // ],
               ],
               cacheDirectory: true,
               // Don't waste time on Gzipping the cache
               cacheCompression: false,
-              
+
               // If an error happens in a package, it's possible to be
               // because it was compiled. Thus, we don't want the browser
               // debugger to show the original code. Instead, the code
@@ -323,7 +319,7 @@ module.exports = {
             // its runtime that would otherwise be processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+            exclude: [/\.(js|mjs|jsx)$/, /\.html$/, /\.json$/],
             loader: require.resolve('file-loader'),
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
@@ -345,13 +341,13 @@ module.exports = {
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     // In development, this will be an empty string.
-    new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
+    new InterpolateHtmlPlugin(HtmlWebpackPlugin, env),
     // This gives some necessary context to module not found errors, such as
     // the requesting resource.
     new ModuleNotFoundPlugin(paths.appPath),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
-    new webpack.DefinePlugin(env.stringified),
+    new webpack.DefinePlugin(env),
     // This is necessary to emit hot updates (currently CSS only):
     new webpack.HotModuleReplacementPlugin(),
     // Watcher doesn't work well if you mistype casing in a path so we use
@@ -376,47 +372,18 @@ module.exports = {
       fileName: 'asset-manifest.json',
       publicPath: publicPath,
     }),
-    // TypeScript type checking
-    useTypeScript &&
-      new ForkTsCheckerWebpackPlugin({
-        typescript: resolve.sync('typescript', {
-          basedir: paths.appNodeModules,
-        }),
-        async: false,
-        checkSyntacticErrors: true,
-        tsconfig: paths.appTsConfig,
-        compilerOptions: {
-          module: 'esnext',
-          moduleResolution: 'node',
-          resolveJsonModule: true,
-          isolatedModules: true,
-          noEmit: true,
-          jsx: 'preserve',
-        },
-        reportFiles: [
-          '**',
-          '!**/*.json',
-          '!**/__tests__/**',
-          '!**/?(*.)(spec|test).*',
-          '!src/setupProxy.js',
-          '!src/setupTests.*',
-        ],
-        watch: paths.appSrc,
-        silent: true,
-        formatter: typescriptFormatter,
-      }),
-  ].filter(Boolean),
+  ],
 
-  // Some libraries import Node modules but don't use them in the browser.
-  // Tell Webpack to provide empty mocks for them so importing them works.
-  node: {
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty',
-  },
-  // Turn off performance processing because we utilize
-  // our own hints via the FileSizeReporter
-  performance: false,
-};
+  // // Some libraries import Node modules but don't use them in the browser.
+  // // Tell Webpack to provide empty mocks for them so importing them works.
+  // node: {
+  //   dgram: 'empty',
+  //   fs: 'empty',
+  //   net: 'empty',
+  //   tls: 'empty',
+  //   child_process: 'empty',
+  // },
+  // // Turn off performance processing because we utilize
+  // // our own hints via the FileSizeReporter
+  // performance: false,
+}
