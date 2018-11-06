@@ -1,0 +1,4 @@
+#Tue Nov 06 13:40:57 GMT 2018
+base.0=/Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex
