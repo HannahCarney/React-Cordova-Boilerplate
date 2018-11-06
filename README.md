@@ -1,44 +1,35 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# React Boilerplate Cordova project
 
-In the project directory, you can run:
+A base project for starting new cordova apps. Contains a sane webpack setup, environmental config, redux, axios http client, routing, basic login screen, rollbar error reporting, eslint and CI/Deployment setup for bitbucket/S3.
 
-### `npm start`
+## Instructions for use
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* Set the name of your project in `package.json`, using the `name` key
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Project setup
 
-### `npm test`
+* `npm install` 
+* `npm run build` Runs a script to set up www folder using an optimized production build
+* `sudo npm install -g cordova`
+* `cordova platform add android`
+* `cordova platform add ios`
+* `cordova platform add browser`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Running locally
 
-### `npm run build`
+run `cordova build android/ios/browser`
+run `cordova run android/ios/broswer`
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Environments
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+* This will run a pre build hook that sets environment config
+* default is development
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ `target=production cordova build ios`
+ `target=development cordova build android`
 
-### `npm run eject`
+* use the -- --live-reload flag for live reloading
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+`target=dev cordova run browser -- --live-relaod`
+`cordova run -- --live-reload --https`
