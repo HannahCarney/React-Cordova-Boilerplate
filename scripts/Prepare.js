@@ -42,7 +42,7 @@ function parseOptions(opts) {
     return result;
 }
 
-module.exports = function(context) {
+function Prepare(context) {
     var Q = context.requireCordovaModule('q');
     var deferral = new Q.defer();
 
@@ -88,7 +88,7 @@ module.exports = function(context) {
                       clearTimeout(changesTimeout);
                     }
                     changesTimeout = setTimeout(function(){
-                      context.cordova.build().then(function() {
+                      context.cordova.prepare().then(function() {
                           patcher.addCSP({
                               index: options.index,
                               servers: serversFromCallback, //need this for building proper CSP
@@ -97,7 +97,7 @@ module.exports = function(context) {
                           bs.reload(changesBuffer);
                           changesBuffer = [];
                       });
-                    },200);
+                    },2000);
                 }
             },
             options: ignoreOptions
@@ -140,7 +140,12 @@ module.exports = function(context) {
         return deferral.resolve();
     });
 
-};
+}
+
+module.exports = Prepare;
+
+
+
 
 // },{"./Patcher":4,"./browserSyncServer":5,"path":undefined}],3:[function(require,module,exports){
 /**
