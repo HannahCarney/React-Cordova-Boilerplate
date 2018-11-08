@@ -1,4 +1,4 @@
 module.exports = {
-    API_URL : 'www.prod.com',
-    target : 'production'
+    API_URL : 'www.dev.com',
+    target : "development"
 };

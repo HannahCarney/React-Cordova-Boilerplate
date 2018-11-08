@@ -8,7 +8,7 @@
   },
   "installed_plugins": {
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.example.tutorial"
+      "PACKAGE_NAME": "com.example.app"
     }
   },
   "dependent_plugins": {}

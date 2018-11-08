@@ -9,7 +9,7 @@ INJECTED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/androi
 INJECTED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:2:1-14:12
 INJECTED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:2:1-14:12
 	package
-		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:2:102-132
+		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:2:102-127
 		INJECTED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml
 	android:versionName
@@ -19,7 +19,7 @@ INJECTED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/androi
 	android:hardwareAccelerated
 		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:2:11-45
 	xmlns:android
-		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:2:133-191
+		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:2:128-186
 	android:versionCode
 		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:2:46-73
 		INJECTED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml
@@ -52,7 +52,7 @@ ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/a
 		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:5:18-52
 	android:icon
 		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:5:53-80
-activity#com.example.tutorial.MainActivity
+activity#com.example.app.MainActivity
 ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:6:9-11:20
 	android:label
 		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:6:97-134

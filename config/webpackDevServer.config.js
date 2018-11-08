@@ -74,6 +74,9 @@ module.exports = function(proxy, allowedHost) {
     },
     // Enable HTTPS if the HTTPS environment variable is set to 'true'
     https: protocol === 'https',
+    livereload: true,
+    directoryListing: false,
+    open: false,
     host,
     overlay: false,
     historyApiFallback: {

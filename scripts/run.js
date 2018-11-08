@@ -4,7 +4,7 @@ const chalk = require('chalk');
 var chalkRainbow = require('chalk-rainbow')
 
 
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 
 
@@ -29,12 +29,15 @@ else {
 
 var theSourceFile = path.join(path.resolve()) + '/config/env.' + process.env.NODE_ENV + '.js';
 var theDestinationFile = path.join(path.resolve()) + '/config/env.js';
-
 if (fs.existsSync(theSourceFile)) {
+    console.log(theSourceFile)
 
+    console.log(fs.readFile(theSourceFile))
+    
     fs.readFile(theSourceFile, function (err, buf) {
-
+    
         if (typeof buf !== 'undefined') {
+
             fs.writeFile(theDestinationFile, buf.toString(), function (err) {
                 console.log(chalk.green(`wrote env.${process.env.NODE_ENV} to env.js`))
                 const env = require('../config/env');
@@ -42,7 +45,11 @@ if (fs.existsSync(theSourceFile)) {
                 console.log(chalkRainbow(`You are running on the ${NODE_ENV} server:\n${env.API_URL}`))
 
                 console.log('-----------------------------');
-                if (err) throw err;
+            
+                if (err) {
+                    console.log("ERROR " + err);
+                    throw err
+                }
             });
         }
         else {
