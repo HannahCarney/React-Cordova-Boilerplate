@@ -35,44 +35,49 @@ function monkeyPatch() {
  */
 module.exports = function(opts, cb) {
     opts = opts || {};
-    var bs = BrowserSync.create();
-
-    var defaults = {
-        logFileChanges: true,
-        logConnections: true,
-        open: false,
-        snippetOptions: {
-            rule: {
-                match: /<\/body>/i,
-                fn: function(snippet, match) {
-                    return monkeyPatch() + snippet + match;
+    if (BrowserSync.has("Hannah")) {
+        return BrowserSync.get("Hannah")
+    }
+    else {
+        var bs = BrowserSync.create("Hannah");
+        var defaults = {
+            logFileChanges: true,
+            logConnections: true,
+            open: false,
+            snippetOptions: {
+                rule: {
+                    match: /<\/body>/i,
+                    fn: function(snippet, match) {
+                        return monkeyPatch() + snippet + match;
+                    }
+                }
+            },
+            minify: false,
+            watchOptions: {},
+            files: [],
+            cors: true,
+            https: false
+        };
+    
+        if (typeof opts === 'function') {
+            opts = opts(defaults);
+        } else {
+            for (var key in defaults) {
+                if (typeof opts[key] === 'undefined') {
+                    opts[key] = defaults[key];
                 }
             }
-        },
-        minify: false,
-        watchOptions: {},
-        files: [],
-        cors: true,
-        https: false
-    };
-
-    if (typeof opts === 'function') {
-        opts = opts(defaults);
-    } else {
-        for (var key in defaults) {
-            if (typeof opts[key] === 'undefined') {
-                opts[key] = defaults[key];
-            }
         }
-    }
-
-    bs.init(opts, function(err, bs) {
-        var urls = bs.options.getIn(['urls']);
-        var servers = {};
-        ['local', 'external', 'tunnel'].forEach(function(type) {
-            servers[type] = urls.get(type);
+    
+        bs.init(opts, function(err, bs) {
+            var urls = bs.options.getIn(['urls']);
+            var servers = {};
+            ['local', 'external', 'tunnel'].forEach(function(type) {
+                servers[type] = urls.get(type);
+            });
+            cb(err, servers);
         });
-        cb(err, servers);
-    });
-    return bs;
+        return bs;
+    }
+  
 };
