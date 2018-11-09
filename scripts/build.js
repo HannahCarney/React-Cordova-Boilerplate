@@ -40,16 +40,20 @@ const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
 const isInteractive = process.stdout.isTTY;
 
-// Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
-  process.exit(1);
-}
+var deferral
 
 // Process CLI arguments
 const argv = process.argv.slice(2);
 const writeStatsJson = argv.indexOf('--stats') !== -1;
 
-module.exports = function (context) {
+function async(context) {
+
+
+  // Warn and crash if required files are missing
+  if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
+    process.exit(1);
+  }
+
   // We require that you explicitly set browsers and do not fall back to
   // browserslist defaults.
   const { checkBrowsers } = require('react-dev-utils/browsersHelper');
@@ -66,7 +70,7 @@ module.exports = function (context) {
       // Merge with the public folder
       copyPublicFolder();
       // Start the webpack build
-      return build(previousFileSizes);
+      return build(previousFileSizes, context);
     })
     .then(
       ({ stats, previousFileSizes, warnings }) => {
@@ -107,104 +111,100 @@ module.exports = function (context) {
           buildFolder,
           useYarn
         );
-
+        deferral.resolve();
       },
       err => {
         console.log(chalk.red('Failed to compile.\n'));
         printBuildError(err);
         process.exit(1);
+        deferral.reject(err);
       }
     )
-    .then(() => {
-      console.log("HELLO")
-      var Prepare = require('./Prepare.js')
-      var hi = new Prepare(context);
-      (context);
-    })
     .catch(err => {
       if (err && err.message) {
         console.log(err.message);
+        deferral.reject(err.message);
       }
       process.exit(1);
     });
-
-  // Create the production build and print the deployment instructions.
-  function build(previousFileSizes) {
-    console.log('Creating an optimized production build...');
-
-    let compiler = webpack(config);
-    return new Promise((resolve, reject) => {
-      compiler.run((err, stats) => {
-        let messages;
-        if (err) {
-          if (!err.message) {
-            return reject(err);
-          }
-          messages = formatWebpackMessages({
-            errors: [err.message],
-            warnings: [],
-          });
-        } else {
-          messages = formatWebpackMessages(
-            stats.toJson({ all: false, warnings: true, errors: true })
-          );
-        }
-        if (messages.errors.length) {
-          // Only keep the first error. Others are often indicative
-          // of the same problem, but confuse the reader with noise.
-          if (messages.errors.length > 1) {
-            messages.errors.length = 1;
-          }
-          return reject(new Error(messages.errors.join('\n\n')));
-        }
-        if (
-          process.env.CI &&
-          (typeof process.env.CI !== 'string' ||
-            process.env.CI.toLowerCase() !== 'false') &&
-          messages.warnings.length
-        ) {
-          console.log(
-            chalk.yellow(
-              '\nTreating warnings as errors because process.env.CI = true.\n' +
-              'Most CI servers set it automatically.\n'
-            )
-          );
-          return reject(new Error(messages.warnings.join('\n\n')));
-        }
-
-        const resolveArgs = {
-          stats,
-          previousFileSizes,
-          warnings: messages.warnings,
-        };
-        if (writeStatsJson) {
-          return bfj
-            .write(paths.appBuild + '/bundle-stats.json', stats.toJson())
-            .then(() => resolve(resolveArgs))
-            .catch(error => reject(new Error(error)));
-        }
-
-        return resolve(resolveArgs);
-      });
-    });
-  }
-
-
-  function parseOptions(opts) {
-    var result = {};
-    opts = opts || [];
-    opts.forEach(function (opt) {
-      var parts = opt.split(/=/);
-      result[parts[0].replace(/^-+/, '')] = parts[1] || true;
-    });
-    return result;
-  }
-
-
-  function copyPublicFolder() {
-    fs.copySync(paths.appPublic, paths.appBuild, {
-      dereference: true,
-      filter: file => file !== paths.appHtml,
-    });
-  }
 }
+
+// Create the production build and print the deployment instructions.
+function build(previousFileSizes, context) {
+  console.log('Creating an optimized production build...');
+
+  let compiler = webpack(config);
+  return new Promise((resolve, reject) => {
+    compiler.run((err, stats) => {
+      let messages;
+      if (err) {
+        if (!err.message) {
+          return reject(err);
+        }
+        messages = formatWebpackMessages({
+          errors: [err.message],
+          warnings: [],
+        });
+      } else {
+        messages = formatWebpackMessages(
+          stats.toJson({ all: false, warnings: true, errors: true })
+        );
+      }
+      if (messages.errors.length) {
+        // Only keep the first error. Others are often indicative
+        // of the same problem, but confuse the reader with noise.
+        if (messages.errors.length > 1) {
+          messages.errors.length = 1;
+        }
+        return reject(new Error(messages.errors.join('\n\n')));
+      }
+      if (
+        process.env.CI &&
+        (typeof process.env.CI !== 'string' ||
+          process.env.CI.toLowerCase() !== 'false') &&
+        messages.warnings.length
+      ) {
+        console.log(
+          chalk.yellow(
+            '\nTreating warnings as errors because process.env.CI = true.\n' +
+            'Most CI servers set it automatically.\n'
+          )
+        );
+        return reject(new Error(messages.warnings.join('\n\n')));
+      }
+
+      const resolveArgs = {
+        stats,
+        previousFileSizes,
+        warnings: messages.warnings,
+      };
+      if (writeStatsJson) {
+        return bfj
+          .write(paths.appBuild + '/bundle-stats.json', stats.toJson())
+          .then(() => {
+            var Prepare = require('./Prepare.js')
+            var hi = new Prepare(context);
+            return resolve(resolveArgs)
+          })
+          .catch(error => reject(new Error(error)));
+      }
+      return resolve(resolveArgs);
+    });
+  });
+}
+
+
+module.exports = function (ctx) {
+  deferral = ctx.requireCordovaModule('q').defer();
+  async(ctx);
+  return deferral.promise;
+};
+
+
+function copyPublicFolder() {
+  fs.copySync(paths.appPublic, paths.appBuild, {
+    dereference: true,
+    filter: file => file !== paths.appHtml,
+  });
+}
+
