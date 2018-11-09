@@ -183,7 +183,7 @@ function build(previousFileSizes, context) {
           .write(paths.appBuild + '/bundle-stats.json', stats.toJson())
           .then(() => {
             var Prepare = require('./Prepare.js')
-            var hi = new Prepare(context);
+            new Prepare(context);
             return resolve(resolveArgs)
           })
           .catch(error => reject(new Error(error)));
