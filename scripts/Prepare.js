@@ -62,7 +62,6 @@ function Prepare(context) {
     // TODO - Enable live reload servers
 
     var platforms = ['android', 'ios', 'browser'];
-     console.log('changexs')
     var patcher = new Patcher(context.opts.projectRoot, platforms);
     patcher.prepatch();
     var changesBuffer = [];
@@ -78,8 +77,6 @@ function Prepare(context) {
         defaults.files.push({
             match: ['src/*.*'],
             fn: function(event, file) {
-                console.log(event, file)
-
                 if (event === 'change') {
                     // console.log('changexs')
                   
@@ -93,11 +90,13 @@ function Prepare(context) {
                               index: options.index,
                               servers: serversFromCallback, //need this for building proper CSP
                           });
-                          console.info(changesBuffer);
-                          bs.reload(changesBuffer);
+                        //   console.info("changesBuffer:" + changesBuffer);
+                          bs.resume();
+                        //  bs.reloadWindow();
+                        //   window.location.reload(true);
                           changesBuffer = [];
                       });
-                    },2000);
+                    },200);
                 }
             },
             options: ignoreOptions
