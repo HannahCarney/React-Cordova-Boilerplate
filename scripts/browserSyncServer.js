@@ -56,7 +56,11 @@ module.exports = function(opts, cb) {
             watchOptions: {},
             files: [],
             cors: true,
-            https: false
+            https: false,
+            // server: {
+            //     baseDir: "./"
+            // },
+            // proxy: "localhost:8000"
         };
     
         if (typeof opts === 'function') {
@@ -70,6 +74,7 @@ module.exports = function(opts, cb) {
         }
     
         bs.init(opts, function(err, bs) {
+            console.log("options" + bs.options)
             var urls = bs.options.getIn(['urls']);
             var servers = {};
             ['local', 'external', 'tunnel'].forEach(function(type) {

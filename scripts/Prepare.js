@@ -74,6 +74,7 @@ function Prepare(context) {
               next();
             }
         }
+
         defaults.files.push({
             match: ['src/*.*'],
             fn: function(event, file) {
@@ -91,7 +92,7 @@ function Prepare(context) {
                               servers: serversFromCallback, //need this for building proper CSP
                           });
                         //   console.info("changesBuffer:" + changesBuffer);
-                          bs.resume();
+                          bs.reload();
                         //  bs.reloadWindow();
                         //   window.location.reload(true);
                           changesBuffer = [];
@@ -102,10 +103,11 @@ function Prepare(context) {
             options: ignoreOptions
         });
 
-        defaults.server = {
-            baseDir: context.opts.projectRoot,
-            routes: {}
-        };
+        // defaults.server = {
+        //   //  baseDir: context.opts.projectRoot,
+        //     routes: {}
+        // };
+        defaults.proxy = "http://localhost:8000"
 
 
         if (typeof options['host'] !== 'undefined') {
@@ -126,16 +128,16 @@ function Prepare(context) {
 
         platforms.forEach(function(platform) {
             var www = patcher.getWWWFolder(platform);
-            defaults.server.routes['/' + www.replace('\\','/')] = path.join(context.opts.projectRoot, www);
+            // defaults.server.routes['/' + www.replace('\\','/')] = path.join(context.opts.projectRoot, www);
         });
 
         return defaults;
     }, function(err, servers) {
-        serversFromCallback=servers;
-        patcher.patch({
-            servers: servers,
-            index: options.index
-        });
+        // serversFromCallback=servers;
+        // patcher.patch({
+        //     servers: servers,
+        //     index: options.index
+        // });
         return deferral.resolve();
     });
 
