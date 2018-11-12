@@ -8,7 +8,7 @@ var path = require('path');
 const exec = require('child_process').exec;
 
 var Patcher = require('./Patcher');
-var browserSyncServer = require('./browserSyncServer');
+var browserSyncServer = require('./browserSyncServer1');
 
 function parseOptions(opts) {
     var result = {};
@@ -122,6 +122,7 @@ function Prepare(context) {
                 };
             });
         });
+        //remove --exit
 
 
         // exec('cordova run browser')

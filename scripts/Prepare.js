@@ -36,84 +36,88 @@ function Prepare(context) {
     }
 
     // TODO - Enable live reload servers
-
+    console.log(context.cordova.platform.check)
     var platforms = ['android', 'ios', 'browser'];
     var patcher = new Patcher(context.opts.projectRoot, platforms);
     patcher.prepatch();
     var changesBuffer = [];
     var changesTimeout;
     var serversFromCallback = [];
-    var bs = browserSyncServer(function (defaults) {
-        if (enableCors) {
-            defaults.middleware = function (req, res, next) {
-                res.setHeader('Access-Control-Allow-Origin', '*');
-                next();
-            }
-        }
-
-        defaults.files.push({
-            match: ['src/*.*'],
-            fn: function (event, file) {
-                if (event === 'change') {
-                    // console.log('changexs')
-
-                    changesBuffer.push(file);
-                    if (changesTimeout) {
-                        clearTimeout(changesTimeout);
-                    }
-                    changesTimeout = setTimeout(function () {
-                        context.cordova.prepare().then(function () {
-                            patcher.addCSP({
-                                index: options.index,
-                                servers: serversFromCallback, //need this for building proper CSP
-                            });
-                            //   console.info("changesBuffer:" + changesBuffer);
-                            bs.reload(changesBuffer);
-                            //  bs.reloadWindow();
-                            //   window.location.reload(true);
-                            changesBuffer = [];
-                        });
-                    }, 200);
+    platforms.forEach(function (platform) {
+        console.log("INDEX: " + platforms.indexOf(platform));
+        var bs = browserSyncServer(function (defaults) {
+            if (enableCors) {
+                defaults.middleware = function (req, res, next) {
+                    res.setHeader('Access-Control-Allow-Origin', '*');
+                    next();
                 }
-            },
-            options: ignoreOptions
-        });
-  
-            defaults.proxy = "http://localhost:8000"
-      
+            }
+
+            defaults.files.push({
+                match: ['src/*.*'],
+                fn: function (event, file) {
+                    if (event === 'change') {
+                        // console.log('changexs')
+
+                        changesBuffer.push(file);
+                        if (changesTimeout) {
+                            clearTimeout(changesTimeout);
+                        }
+                        changesTimeout = setTimeout(function () {
+                            context.cordova.prepare().then(function () {
+                                patcher.addCSP({
+                                    index: options.index,
+                                    servers: serversFromCallback, //need this for building proper CSP
+                                });
+                                //   console.info("changesBuffer:" + changesBuffer);
+                                bs.reload(changesBuffer);
+                                //  bs.reloadWindow();
+                                //   window.location.reload(true);
+                                changesBuffer = [];
+                            });
+                        }, 200);
+                    }
+                },
+                options: ignoreOptions
+            });
 
 
+            if (typeof options['host'] !== 'undefined') {
+                defaults.host = options['host'];
+            }
 
-        if (typeof options['host'] !== 'undefined') {
-            defaults.host = options['host'];
-        }
+            if (typeof options['port'] !== 'undefined') {
+                defaults.port = options['port'];
+            }
 
-        if (typeof options['port'] !== 'undefined') {
-            defaults.port = options['port'];
-        }
+            if (typeof options['online'] !== 'undefined') {
+                defaults.online = options['online'].toLocaleLowerCase() !== 'false';
+            }
 
-        if (typeof options['online'] !== 'undefined') {
-            defaults.online = options['online'].toLocaleLowerCase() !== 'false';
-        }
+            if (typeof options['https'] !== 'undefined') {
+                defaults.https = true;
+            }
 
-        if (typeof options['https'] !== 'undefined') {
-            defaults.https = true;
-        }
+            return defaults;
+        },
+            platform, platforms.indexOf(platform), function (err, servers) {
+                if (platform === "browser") {
+                    // wee hack to override the cordova native browser run script :)
+                    var theSourceFile = path.join(path.resolve()) + '/scripts/start.js';
+                    fs.readFile(theSourceFile, function (err, buf) {
+                        if (typeof buf !== 'undefined') {
+                            var theDestinationFile = path.join(path.resolve()) + '/platforms/browser/lib/run.js';
+                            fs.writeFile(theDestinationFile, buf.toString(), function (err) { });
+                        };
+                    });
+                    return deferral.resolve();
+                }
+                else {
+                    return deferral.resolve();
+                }
 
-        return defaults;
-    }, function (err, servers) {
-
-        // wee hack to override the cordova native browser run script :)
-        var theSourceFile = path.join(path.resolve()) + '/scripts/start.js';
-        fs.readFile(theSourceFile, function (err, buf) {
-            if (typeof buf !== 'undefined') {
-                var theDestinationFile = path.join(path.resolve()) + '/platforms/browser/lib/run.js';
-                fs.writeFile(theDestinationFile, buf.toString(), function (err) { });
-            };
-        });
-        return deferral.resolve();
+            });
     });
-
 }
 
 module.exports = Prepare;
