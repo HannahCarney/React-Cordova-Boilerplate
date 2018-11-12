@@ -2,10 +2,11 @@
 
 var path = require('path');
 var fs = require('fs');
+const paths = require('../config/paths');
 
 var path = require('path');
-
 var Patcher = require('./Patcher');
+
 var browserSyncServer = require('./browserSyncServer');
 
 function parseOptions(opts) {
@@ -36,15 +37,15 @@ function Prepare(context) {
     }
 
     // TODO - Enable live reload servers
-    console.log(context.cordova.platform.check)
-    var platforms = ['android', 'ios', 'browser'];
+
+    var platforms = ['browser', 'ios'];
     var patcher = new Patcher(context.opts.projectRoot, platforms);
     patcher.prepatch();
     var changesBuffer = [];
     var changesTimeout;
     var serversFromCallback = [];
     platforms.forEach(function (platform) {
-        console.log("INDEX: " + platforms.indexOf(platform));
+     
         var bs = browserSyncServer(function (defaults) {
             if (enableCors) {
                 defaults.middleware = function (req, res, next) {
@@ -57,8 +58,6 @@ function Prepare(context) {
                 match: ['src/*.*'],
                 fn: function (event, file) {
                     if (event === 'change') {
-                        // console.log('changexs')
-
                         changesBuffer.push(file);
                         if (changesTimeout) {
                             clearTimeout(changesTimeout);
@@ -69,13 +68,12 @@ function Prepare(context) {
                                     index: options.index,
                                     servers: serversFromCallback, //need this for building proper CSP
                                 });
-                                //   console.info("changesBuffer:" + changesBuffer);
-                                bs.reload(changesBuffer);
+                                bs.reload();
                                 //  bs.reloadWindow();
                                 //   window.location.reload(true);
                                 changesBuffer = [];
                             });
-                        }, 200);
+                        }, 2000);
                     }
                 },
                 options: ignoreOptions
@@ -98,6 +96,26 @@ function Prepare(context) {
                 defaults.https = true;
             }
 
+            if (platform !== "browser") {
+                defaults.server = {
+                    baseDir: context.opts.projectRoot,
+                    routes: {}
+                };
+                var www = patcher.getWWWFolder(platform);
+                console.log("WWW: " + www)
+                defaults.server.routes['/' + www.replace('\\','/')] = path.join(context.opts.projectRoot, www);
+                var theSourceFile = path.join(path.resolve()) + '/scripts/run-ios.js';
+                fs.readFile(theSourceFile, function (err, buf) {
+                    if (typeof buf !== 'undefined') {
+                        var theDestinationFile = path.join(path.resolve()) + `/platforms/${platform}/cordova/lib/run.js`;
+                        console.log(theDestinationFile)
+                        fs.writeFile(theDestinationFile, buf.toString(), function (err) {
+                            console.log("error: " + err)
+                         });
+                    };
+                });
+            }
+
             return defaults;
         },
             platform, platforms.indexOf(platform), function (err, servers) {
@@ -113,6 +131,11 @@ function Prepare(context) {
                     return deferral.resolve();
                 }
                 else {
+                    serversFromCallback = servers;
+                    patcher.patch({
+                        servers: servers,
+                        index: options.index
+                    });
                     return deferral.resolve();
                 }
 

@@ -44,6 +44,14 @@
         "source": "/Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/res/drawable-port-xxhdpi/screen.png"
     },
     {
+        "merged": "/Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/build/intermediates/res/merged/debug/raw_beep.mp3.flat",
+        "source": "/Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/res/raw/beep.mp3"
+    },
+    {
+        "merged": "/Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/build/intermediates/res/merged/debug/layout_mb_layout_splash_screen.xml.flat",
+        "source": "/Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/res/layout/mb_layout_splash_screen.xml"
+    },
+    {
         "merged": "/Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/build/intermediates/res/merged/debug/mipmap-hdpi_icon.png.flat",
         "source": "/Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/res/mipmap-hdpi/icon.png"
     },
