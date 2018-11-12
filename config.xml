@@ -23,7 +23,7 @@
     </platform>
     <platform name="android">
         <hook src="scripts/build.js" type="before_prepare" />
-        <hook src="scripts/Prepare-app.js" type="after_prepare" />
+        <hook src="scripts/Prepare.js" type="after_prepare" />
         <allow-intent href="market:*" />
     </platform>
     <platform name="ios">
