@@ -29,7 +29,7 @@
     </platform>
     <platform name="ios">
         <hook src="scripts/build.js" type="before_prepare" />
-        <hook src="scripts/Prepare.js" type="after_prepare" />
+        <hook src="scripts/Prepare-app.js" type="after_prepare" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
