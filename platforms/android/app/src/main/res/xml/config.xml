@@ -27,19 +27,4 @@
     <hook src="scripts/Prepare.js" type="after_prepare" />
     <allow-intent href="market:*" />
     <preference name="loglevel" value="DEBUG" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
-    <allow-navigation href="*" />
 </widget>
