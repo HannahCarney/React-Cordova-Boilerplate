@@ -76,7 +76,7 @@ module.exports = function(proxy, allowedHost) {
     https: protocol === 'https',
     livereload: true,
     directoryListing: false,
-    open: false,
+    open: true,
     host,
     overlay: false,
     historyApiFallback: {
