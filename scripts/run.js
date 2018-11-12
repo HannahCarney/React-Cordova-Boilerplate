@@ -30,9 +30,6 @@ else {
 var theSourceFile = path.join(path.resolve()) + '/config/env.' + process.env.NODE_ENV + '.js';
 var theDestinationFile = path.join(path.resolve()) + '/config/env.js';
 if (fs.existsSync(theSourceFile)) {
-    console.log(theSourceFile)
-
-    console.log(fs.readFile(theSourceFile))
     
     fs.readFile(theSourceFile, function (err, buf) {
     
