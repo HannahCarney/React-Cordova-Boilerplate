@@ -5,6 +5,8 @@ var fs = require('fs');
 
 var path = require('path');
 
+const exec = require('child_process').exec;
+
 var Patcher = require('./Patcher');
 var browserSyncServer = require('./browserSyncServer');
 
@@ -109,7 +111,9 @@ function Prepare(context) {
             defaults.server.routes['/' + www.replace('\\','/')] = path.join(context.opts.projectRoot, www);
         });
 
-        
+        // exec('cordova run browser')
+      
+
 
         return defaults;
     }, function (err, servers) {

@@ -58,9 +58,7 @@ module.exports = function(opts, cb) {
             files: [],
             cors: true,
             https: false,
-            server: {
-                baseDir: "./"
-            },
+        
             // proxy: "localhost:8000"
         };
     
