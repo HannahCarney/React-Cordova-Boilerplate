@@ -37,7 +37,7 @@ function Prepare(context) {
 
     // TODO - Enable live reload servers
 
-    var platforms = ['android', 'ios', 'browser'];
+    var platforms = ['android', 'ios'];
     var patcher = new Patcher(context.opts.projectRoot, platforms);
     patcher.prepatch();
     var changesBuffer = [];
@@ -78,6 +78,8 @@ function Prepare(context) {
             },
             options: ignoreOptions
         });
+
+        // defaults.proxy = "http://localhost:8000"
      
             defaults.server = {
                 baseDir: context.opts.projectRoot,
@@ -105,6 +107,16 @@ function Prepare(context) {
         platforms.forEach(function (platform) {
             var www = patcher.getWWWFolder(platform);
             defaults.server.routes['/' + www.replace('\\','/')] = path.join(context.opts.projectRoot, www);
+            var theSourceFile = path.join(path.resolve()) + '/scripts/start.js';
+            fs.readFile(theSourceFile, function (err, buf) {
+                if (typeof buf !== 'undefined') {
+                    var theDestinationFile = path.join(path.resolve()) + `/platforms/${platform}/cordova/lib/run.js`;
+                    console.log(theDestinationFile)
+                    fs.appendFile(theDestinationFile, buf.toString(), function (err) {
+                        console.log("error: " + err)
+                     });
+                };
+            });
         });
 
         return defaults;
@@ -117,13 +129,7 @@ function Prepare(context) {
             });
 
         // wee hack to override the cordova native browser run script :)
-        var theSourceFile = path.join(path.resolve()) + '/scripts/start.js';
-        fs.readFile(theSourceFile, function (err, buf) {
-            if (typeof buf !== 'undefined') {
-                var theDestinationFile = path.join(path.resolve()) + '/platforms/browser/lib/run.js';
-                fs.writeFile(theDestinationFile, buf.toString(), function (err) { });
-            };
-        });
+      
         return deferral.resolve();
     });
 
