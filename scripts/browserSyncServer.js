@@ -43,7 +43,7 @@ module.exports = function(opts, cb) {
         var defaults = {
             logFileChanges: true,
             logConnections: true,
-            open: false,
+            open: true,
             snippetOptions: {
                 rule: {
                     match: /<\/body>/i,
@@ -74,7 +74,6 @@ module.exports = function(opts, cb) {
         }
     
         bs.init(opts, function(err, bs) {
-            console.log("options" + bs.options)
             var urls = bs.options.getIn(['urls']);
             var servers = {};
             ['local', 'external', 'tunnel'].forEach(function(type) {
