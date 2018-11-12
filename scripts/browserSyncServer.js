@@ -33,17 +33,19 @@ function monkeyPatch() {
  * @param {Object} opts - Options Object to be passed to browserSync. If this is a function, the function is called with default values and should return the final options to be passed to browser-sync
  * @param {Function} cb - A callback when server is ready, calls with (err, servr_hostname)
  */
-module.exports = function(opts, cb) {
+module.exports = function(opts, platform, number, cb) {
     opts = opts || {};
-    if (BrowserSync.has("Hannah")) {
-        return BrowserSync.get("Hannah")
+    var port = 4000 + number;
+    if (BrowserSync.has(platform)) {
+        return  BrowserSync.get(platform);
     }
     else {
-        var bs = BrowserSync.create("Hannah");
+        var bs = BrowserSync.create(platform);
         var defaults = {
             notify: false,
             logFileChanges: true,
             logConnections: true,
+            port: port,
             open: true,
             snippetOptions: {
                 rule: {
@@ -59,8 +61,12 @@ module.exports = function(opts, cb) {
             cors: true,
             https: false,
         
-            // proxy: "localhost:8000"
+            
         };
+        console.log(platform)
+        if (platform === "browser") {
+            defaults.proxy = "localhost:8000";
+        }
     
         if (typeof opts === 'function') {
             opts = opts(defaults);
@@ -73,6 +79,7 @@ module.exports = function(opts, cb) {
         }
     
         bs.init(opts, function(err, bs) {
+            console.log(err)
             var urls = bs.options.getIn(['urls']);
             var servers = {};
             ['local', 'external', 'tunnel'].forEach(function(type) {

@@ -25,6 +25,8 @@
     <hook src="scripts/npmInstall.js" type="after_plugin_install" />
     <hook src="scripts/build.js" type="before_prepare" />
     <hook src="scripts/Prepare.js" type="after_prepare" />
+    <hook src="scripts/run.js" type="after_run" />
     <allow-intent href="market:*" />
     <preference name="loglevel" value="DEBUG" />
+    <allow-navigation href="*" />
 </widget>
