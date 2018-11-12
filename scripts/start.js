@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -51,8 +50,8 @@ var cordovaServe = require('cordova-serve');
             }
             var projectUrl = url.resolve('http://localhost:' + server.port + '/', startPage);
             console.log('startPage = ' + server.port);
-            console.log('Static file server running @ ' + projectUrl + '\nCTRL + C to shut down');
-            return server.launchBrowser({'target': args.target, 'url': projectUrl});
+            // console.log('Static file server running @ ' + projectUrl + '\nCTRL + C to shut down');
+            // return server.launchBrowser({'target': args.target, 'url': projectUrl});
         })
         .catch(function (error) {
             console.log(error.message || error.toString());

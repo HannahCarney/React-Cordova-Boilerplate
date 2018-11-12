@@ -107,17 +107,9 @@ function Prepare(context) {
         platforms.forEach(function (platform) {
             var www = patcher.getWWWFolder(platform);
             defaults.server.routes['/' + www.replace('\\','/')] = path.join(context.opts.projectRoot, www);
-            var theSourceFile = path.join(path.resolve()) + '/scripts/start.js';
-            fs.readFile(theSourceFile, function (err, buf) {
-                if (typeof buf !== 'undefined') {
-                    var theDestinationFile = path.join(path.resolve()) + `/platforms/${platform}/cordova/lib/run.js`;
-                    console.log(theDestinationFile)
-                    fs.appendFile(theDestinationFile, buf.toString(), function (err) {
-                        console.log("error: " + err)
-                     });
-                };
-            });
         });
+
+        
 
         return defaults;
     }, function (err, servers) {
