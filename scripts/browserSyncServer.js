@@ -68,6 +68,7 @@ module.exports = function(opts, platform, number, cb) {
             defaults.proxy = "localhost:8000";
         }
     
+    
         if (typeof opts === 'function') {
             opts = opts(defaults);
         } else {
