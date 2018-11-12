@@ -78,9 +78,11 @@ function Prepare(context) {
             },
             options: ignoreOptions
         });
-  
-            defaults.proxy = "http://localhost:8000"
-      
+     
+            defaults.server = {
+                baseDir: context.opts.projectRoot,
+                routes: {}
+            };
 
 
 
@@ -100,8 +102,19 @@ function Prepare(context) {
             defaults.https = true;
         }
 
+        platforms.forEach(function (platform) {
+            var www = patcher.getWWWFolder(platform);
+            defaults.server.routes['/' + www.replace('\\','/')] = path.join(context.opts.projectRoot, www);
+        });
+
         return defaults;
     }, function (err, servers) {
+    
+            serversFromCallback = servers;
+            patcher.patch({
+                servers: servers,
+                index: options.index
+            });
 
         // wee hack to override the cordova native browser run script :)
         var theSourceFile = path.join(path.resolve()) + '/scripts/start.js';

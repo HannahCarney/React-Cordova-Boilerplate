@@ -16,20 +16,25 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <hook src="scripts/npmInstall.js" type="after_plugin_install" />
-    <hook src="scripts/build.js" type="before_prepare" />
-    <hook src="scripts/Prepare.js" type="after_prepare" />
-    <hook src="scripts/run.js" type="after_run" />
-    <platform name="android">
+    <platform name="browser">
+        <hook src="scripts/build.js" type="before_prepare" />
+        <hook src="scripts/Prepare.js" type="after_prepare" />
         <hook src="scripts/run.js" type="after_run" />
+    </platform>
+    <platform name="android">
+        <hook src="scripts/build.js" type="before_prepare" />
+        <hook src="scripts/Prepare-app.js" type="after_prepare" />
         <allow-intent href="market:*" />
     </platform>
     <platform name="ios">
-        <hook src="scripts/run.js" type="after_run" />
+        <hook src="scripts/build.js" type="before_prepare" />
+        <hook src="scripts/Prepare-app.js" type="after_prepare" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
+    <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <engine name="browser" spec="^5.0.4" />
-    <engine name="android" spec="^7.1.1" />
+    <engine name="android" spec="^7.1.2" />
     <engine name="ios" spec="^4.5.5" />
 </widget>
