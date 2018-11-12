@@ -66,9 +66,12 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "run-forest": "node scripts/run-forest.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "prepare": "node scripts/pluginHook.js"
+    "prepare": "node scripts/Prepare.js",
+    "run": "node scripts/run.js",
+    "start:browser": "npm run run && cordova prepare browser && npm run start"
   },
   "eslintConfig": {
     "extends": "react-app"
