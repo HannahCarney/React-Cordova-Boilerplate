@@ -24,10 +24,12 @@
     <platform name="android">
         <hook src="scripts/build.js" type="before_prepare" />
         <hook src="scripts/Prepare.js" type="after_prepare" />
+        <hook src="scripts/Prepare.js" type="after_prepare" />
         <allow-intent href="market:*" />
     </platform>
     <platform name="ios">
         <hook src="scripts/build.js" type="before_prepare" />
+        <hook src="scripts/Prepare.js" type="after_prepare" />
         <hook src="scripts/Prepare-app.js" type="after_prepare" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
@@ -36,5 +38,4 @@
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^7.1.2" />
-    <engine name="ios" spec="^4.5.5" />
 </widget>
