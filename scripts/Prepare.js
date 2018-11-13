@@ -7,6 +7,7 @@ var path = require('path');
 
 var Patcher = require('./Patcher');
 var browserSyncServer = require('./browserSyncServer');
+var deferral;
 
 function parseOptions(opts) {
     var result = {};
@@ -79,8 +80,8 @@ function Prepare(context) {
             options: ignoreOptions
         });
 
-        //  needs to be able to run more than one at a time
-
+        //TODO:  needs to be able to run more than one at a time
+        console.log(context.opts.platforms[0])
         var www = patcher.getWWWFolder(context.opts.platforms[0]);
         defaults.server = {
             baseDir: path.join(context.opts.projectRoot, www),
@@ -123,6 +124,14 @@ function Prepare(context) {
         return deferral.resolve();
     });
 
+    return deferral.resolve();
+
+
 }
 
-module.exports = Prepare;
+module.exports = function (ctx) {
+    deferral = ctx.requireCordovaModule('q').defer();
+    Prepare(ctx);
+    return deferral.promise;
+  };
+

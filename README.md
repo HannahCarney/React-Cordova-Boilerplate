@@ -14,6 +14,7 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 * `cordova platform add android`
 * `cordova platform add ios`
 * `cordova platform add browser`
+* `cordova build`
 
 ## Running locally
 
