@@ -127,11 +127,12 @@ function Prepare(context) {
         },
             platform, platforms.indexOf(platform), function (err, servers) {
                 if (platform === "browser") {
+                    console.log("yes")
                     // wee hack to override the cordova native browser run script :)
                     var theSourceFile = path.join(path.resolve()) + '/scripts/start.js';
                     fs.readFile(theSourceFile, function (err, buf) {
                         if (typeof buf !== 'undefined') {
-                            var theDestinationFile = path.join(path.resolve()) + '/platforms/browser/lib/run.js';
+                            var theDestinationFile = path.join(path.resolve()) + '/platforms/browser/cordova/lib/run.js';
                             fs.writeFile(theDestinationFile, buf.toString(), function (err) { });
                         };
                     });
