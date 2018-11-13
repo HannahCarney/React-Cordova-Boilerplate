@@ -21,7 +21,6 @@ yarn-debug.log*
 yarn-error.log*
 
 /dist
-/node_modules
 /platforms
 /plugins
 package-lock.json
