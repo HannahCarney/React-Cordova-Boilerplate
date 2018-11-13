@@ -7,7 +7,6 @@ var path = require('path');
 
 var Patcher = require('./Patcher');
 var browserSyncServer = require('./browserSyncServer');
-var browserSyncServer1 = require('./browserSyncServer1');
 
 function parseOptions(opts) {
     var result = {};
@@ -87,18 +86,6 @@ function Prepare(context) {
             baseDir: path.join(context.opts.projectRoot, www),
             routes: {}
         };
-        defaults.server.routes['/' + www.replace('\\', '/')] = "https://www.google.com"
-
-        // if (context.opts.platforms[0] !== "browser") {
-        //     browserSyncServer1(function (defaults) {
-        //         if (enableCors) {
-        //             defaults.middleware = function (req, res, next) {
-        //                 res.setHeader('Access-Control-Allow-Origin', '*');
-        //                 next();
-        //             }
-        //         }
-        //     });
-        // };
 
         if (typeof options['host'] !== 'undefined') {
             defaults.host = options['host'];
@@ -118,8 +105,14 @@ function Prepare(context) {
 
         return defaults;
     }, function (err, servers) {
+        if (err) {
+            console.log(err);
+            return deferral.reject()
+        }
 
-        // wee hack to override the cordova native browser run script :)
+        patcher.setConfig(servers.external) 
+
+        // wee hack to override the cordova native browser run script
         var theSourceFile = path.join(path.resolve()) + '/scripts/start.js';
         fs.readFile(theSourceFile, function (err, buf) {
             if (typeof buf !== 'undefined') {
