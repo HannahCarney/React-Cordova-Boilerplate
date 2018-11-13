@@ -8,7 +8,7 @@
         Apache Cordova Team
     </author>
     <access launch-external="no" origin="*" />
-    <content src="http://192.168.1.7:5000" />
+    <content src="http://192.168.1.7:50" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access launch-external="no" origin="*" />
     <allow-navigation href="*" />

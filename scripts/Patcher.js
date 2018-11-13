@@ -22,6 +22,7 @@ var CONFIG_LOCATION = {
 };
 
 var START_PAGE = '../www/index.html';
+var EXTERNAL_URL = '';
 
 function parseXml(filename) {
     return new et.ElementTree(et.XML(fs.readFileSync(filename, "utf-8").replace(/^\uFEFF/, "")));
@@ -91,8 +92,8 @@ Patcher.prototype.updateConfigXml = function () {
     return this.__forEachFile('**/config.xml', CONFIG_LOCATION, function (filename, platform) {
         configXml = parseXml(filename);
         var contentTag = configXml.find('content[@src]');
-        if (contentTag && process.env.NODE_ENV == "production") {
-            contentTag.attrib.src = START_PAGE;
+        if (contentTag) {
+            contentTag.attrib.src = process.env.NODE_ENV == "production" ? START_PAGE : EXTERNAL_URL;
         }
         // Also add allow nav in case of
         var allowNavTag = et.SubElement(configXml.find('.'), 'allow-navigation');
@@ -144,8 +145,12 @@ Patcher.prototype.fixATS = function () {
 Patcher.prototype.prepatch = function () {
     // copy the serverless start page so initial load doesn't throw 404
     this.copyStartPage({});
-    this.updateConfigXml();
     this.updateManifestJSON();
+}
+
+Patcher.prototype.setConfig = function (externalUrl) {
+    EXTERNAL_URL = externalUrl;
+    this.updateConfigXml()
 }
 
 Patcher.prototype.patch = function (opts) {

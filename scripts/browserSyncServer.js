@@ -73,9 +73,11 @@ module.exports = function(opts, cb) {
             var servers = {};
             ['local', 'external', 'tunnel'].forEach(function(type) {
                 servers[type] = urls.get(type);
+                
             });
             cb(err, servers);
         });
+      
         return bs;
     }
   
