@@ -38,7 +38,7 @@ function Prepare(context) {
 
     // TODO - Enable live reload servers
 
-    var platforms = ['ios'];
+    var platforms = ['browser'];
     var patcher = new Patcher(context.opts.projectRoot, platforms);
     patcher.prepatch();
     var changesBuffer = [];

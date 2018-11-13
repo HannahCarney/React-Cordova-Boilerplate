@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import MainWebView from './WebView'
 import registerServiceWorker from './serviceWorker';
 
 const startApp = () => {
