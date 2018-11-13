@@ -8,16 +8,14 @@
         Apache Cordova Team
     </author>
     <access launch-external="no" origin="*" />
-    <content src="http://192.168.150.240:3000" />
+    <content src="http://192.168.150.240:5000" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access launch-external="no" origin="*" />
-    <allow-navigation href="http://*/*" />
-    <allow-navigation href="https://*/*" />
+    <allow-navigation href="*" />
     <allow-intent href="tel:*" />
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <hook src="scripts/npmInstall.js" type="after_plugin_install" />
     <hook src="scripts/build.js" type="before_prepare" />
     <hook src="scripts/Prepare.js" type="after_prepare" />
     <hook src="scripts/run.js" type="after_run" />
@@ -31,6 +29,6 @@
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <engine name="android" spec="^7.1.2" />
-    <engine name="browser" spec="^5.0.4" />
     <engine name="ios" spec="^4.5.5" />
+    <engine name="browser" spec="^5.0.4" />
 </widget>

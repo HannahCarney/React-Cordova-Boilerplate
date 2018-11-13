@@ -39,6 +39,7 @@ module.exports = function(opts, cb) {
         var bs = BrowserSync.create("Hannah");
         var defaults = {
             notify: false,
+            port: 5000,
             logFileChanges: true,
             logConnections: true,
             open: true,
