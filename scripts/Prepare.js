@@ -38,7 +38,7 @@ function Prepare(context) {
 
     // TODO - Enable live reload servers
 
-    var platforms = ['browser', 'ios'];
+    var platforms = ['ios'];
     var patcher = new Patcher(context.opts.projectRoot, platforms);
     patcher.prepatch();
     var changesBuffer = [];
@@ -68,7 +68,11 @@ function Prepare(context) {
                                     index: options.index,
                                     servers: serversFromCallback, //need this for building proper CSP
                                 });
+                               
                                 bs.reload();
+                                console.log(context)
+                                context
+                                // window.location.reload(true);
                                 //  bs.reloadWindow();
                                 //   window.location.reload(true);
                                 changesBuffer = [];
@@ -97,13 +101,16 @@ function Prepare(context) {
             }
 
             if (platform !== "browser") {
+                var www = patcher.getWWWFolder(platform);
                 defaults.server = {
-                    baseDir: context.opts.projectRoot,
+                    baseDir: path.join(context.opts.projectRoot, www),
                     routes: {}
                 };
-                var www = patcher.getWWWFolder(platform);
+             
                 console.log("WWW: " + www)
+                // console.log(defaults.server.routes['/' + www.replace('\\','/')]);
                 defaults.server.routes['/' + www.replace('\\','/')] = path.join(context.opts.projectRoot, www);
+                console.log(defaults.server.routes['/' + www.replace('\\','/')]);
                 var theSourceFile = path.join(path.resolve()) + '/scripts/run-ios.js';
                 fs.readFile(theSourceFile, function (err, buf) {
                     if (typeof buf !== 'undefined') {

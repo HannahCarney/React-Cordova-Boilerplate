@@ -55,6 +55,7 @@ module.exports = function(opts, platform, number, cb) {
                     }
                 }
             },
+            browserify: true,
             minify: false,
             watchOptions: {},
             files: [],
