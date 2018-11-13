@@ -68,7 +68,7 @@ function Prepare(context) {
                                 index: options.index,
                                 servers: serversFromCallback, //need this for building proper CSP
                             });
-                            //   console.info("changesBuffer:" + changesBuffer);
+                              console.info("changesBuffer:" + changesBuffer);
                             bs.reload();
                             //  bs.reloadWindow();
                             //   window.location.reload(true);
