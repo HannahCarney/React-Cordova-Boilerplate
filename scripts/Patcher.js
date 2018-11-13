@@ -71,7 +71,7 @@ Patcher.prototype.addCSP = function (opts) {
 };
 
 Patcher.prototype.copyStartPage = function (opts) {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV == "production") {
         var html = fs.readFileSync(path.join(__dirname, START_PAGE), 'utf-8');
         this.__forEachFile('**/index.html', WWW_FOLDER, function (filename, platform) {
             var dest = path.join(path.dirname(filename), START_PAGE);
@@ -91,7 +91,7 @@ Patcher.prototype.updateConfigXml = function () {
     return this.__forEachFile('**/config.xml', CONFIG_LOCATION, function (filename, platform) {
         configXml = parseXml(filename);
         var contentTag = configXml.find('content[@src]');
-        if (contentTag && process.env.NODE_ENV === "production") {
+        if (contentTag && process.env.NODE_ENV == "production") {
             contentTag.attrib.src = START_PAGE;
         }
         // Also add allow nav in case of
@@ -106,22 +106,22 @@ Patcher.prototype.updateConfigXml = function () {
 
 Patcher.prototype.updateManifestJSON = function () {
     return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
-        if (process.env.NODE_ENV === "production") {
         var manifest = require(filename);
-        manifest.start_url = START_PAGE;
+        if (process.env.NODE_ENV == "production") {
+            manifest.start_url = START_PAGE;
+        }
         fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
         // console.log('Set start page for %s', filename)
-        }
     });
 }
 
 Patcher.prototype.updateBrowser = function () {
     return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
         var manifest = require(filename);
-        if (process.env.NODE_ENV === "production") {
+        if (process.env.NODE_ENV == "production") {
             manifest.start_url = START_PAGE;
-            fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
         }
+        fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
         // console.log('Set start page for %s', filename)
     });
 }
