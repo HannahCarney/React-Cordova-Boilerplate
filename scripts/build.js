@@ -185,10 +185,11 @@ function build(previousFileSizes, context) {
             // var Prepare = require('./Prepare.js')
             // new Prepare(context);
             // return resolve(resolveArgs)
+            return resolve(resolveArgs);
           })
           .catch(error => reject(new Error(error)));
       }
-      return resolve(resolveArgs);
+   
     });
   });
 }

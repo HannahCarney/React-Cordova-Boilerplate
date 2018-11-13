@@ -106,11 +106,7 @@ function Prepare(context) {
 
         return defaults;
     }, function (err, servers) {
-        if (err) {
-            console.log(err);
-            return deferral.reject()
-        }
-
+    
         patcher.setConfig(servers.external) 
 
         // wee hack to override the cordova native browser run script
@@ -121,17 +117,10 @@ function Prepare(context) {
                 fs.writeFile(theDestinationFile, buf.toString(), function (err) { });
             };
         });
-        return deferral.resolve();
+      
     });
-
-    return deferral.resolve();
-
 
 }
 
-module.exports = function (ctx) {
-    deferral = ctx.requireCordovaModule('q').defer();
-    Prepare(ctx);
-    return deferral.promise;
-  };
+module.exports = Prepare
 
