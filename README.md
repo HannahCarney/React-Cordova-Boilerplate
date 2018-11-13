@@ -10,7 +10,6 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 ## Project setup
 
 * `npm install` 
-* `npm run build` Runs a script to set up www folder using an optimized production build
 * `sudo npm install -g cordova`
 * `cordova platform add android`
 * `cordova platform add ios`
@@ -18,7 +17,6 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 
 ## Running locally
 
-run `cordova build android/ios/browser`
 run `cordova run android/ios/broswer`
 
 ## Environments
@@ -26,8 +24,8 @@ run `cordova run android/ios/broswer`
 * This will run a pre build hook that sets environment config
 * default is development
 
- `target=production cordova build ios`
- `target=development cordova build android`
+ `target=production cordova run ios`
+ `target=development cordova run android`
 
 * use the -- --live-reload flag for live reloading
 

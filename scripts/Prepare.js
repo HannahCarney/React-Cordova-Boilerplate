@@ -37,7 +37,7 @@ function Prepare(context) {
 
     // TODO - Enable live reload servers
 
-    var platforms = ['browser', 'android', 'ios'];
+    var platforms = context.opts.platforms;
     var patcher = new Patcher(context.opts.projectRoot, platforms);
     patcher.prepatch();
     var changesBuffer = [];
@@ -79,15 +79,19 @@ function Prepare(context) {
             options: ignoreOptions
         });
       
-            // defaults.proxy = "http://localhost:8000"
+            //  needs to be able to run more than one at a time
        
-            var www = patcher.getWWWFolder("ios");
+            var www = patcher.getWWWFolder(context.opts.platforms[0]);
             defaults.server = {
                 baseDir: path.join(context.opts.projectRoot, www),
                 routes: {}
             };           
             defaults.server.routes['/' + www.replace('\\','/')] = path.join(context.opts.projectRoot, www);
         // });
+
+
+
+
       
 
 
