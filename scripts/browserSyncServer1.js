@@ -35,16 +35,14 @@ function monkeyPatch() {
  */
 module.exports = function(opts, cb) {
     opts = opts || {};
-    if (BrowserSync.has("app")) {
-        return BrowserSync.get("app")
-    }
-    else {
-        var bs = BrowserSync.create("app");
+  
+        var bs = BrowserSync.create("Hannah");
         var defaults = {
             notify: false,
             logFileChanges: true,
             logConnections: true,
             open: true,
+            port: 4000,
             snippetOptions: {
                 rule: {
                     match: /<\/body>/i,
@@ -58,10 +56,7 @@ module.exports = function(opts, cb) {
             files: [],
             cors: true,
             https: false,
-            server: {
-                baseDir: "./"
-            },
-
+            proxy: "http://192.168.150.240:3000"
         };
     
         if (typeof opts === 'function') {
@@ -85,4 +80,3 @@ module.exports = function(opts, cb) {
         return bs;
     }
   
-};

@@ -7,6 +7,7 @@ var path = require('path');
 
 var Patcher = require('./Patcher');
 var browserSyncServer = require('./browserSyncServer');
+var browserSyncServer1 = require('./browserSyncServer1');
 
 function parseOptions(opts) {
     var result = {};
@@ -78,23 +79,26 @@ function Prepare(context) {
             },
             options: ignoreOptions
         });
-      
-            //  needs to be able to run more than one at a time
-       
-            var www = patcher.getWWWFolder(context.opts.platforms[0]);
-            defaults.server = {
-                baseDir: path.join(context.opts.projectRoot, www),
-                routes: {}
-            };           
-            defaults.server.routes['/' + www.replace('\\','/')] = path.join(context.opts.projectRoot, www);
-        // });
 
+        //  needs to be able to run more than one at a time
 
+        var www = patcher.getWWWFolder(context.opts.platforms[0]);
+        defaults.server = {
+            baseDir: path.join(context.opts.projectRoot, www),
+            routes: {}
+        };
+        defaults.server.routes['/' + www.replace('\\', '/')] = "https://www.google.com"
 
-
-      
-
-
+        // if (context.opts.platforms[0] !== "browser") {
+        //     browserSyncServer1(function (defaults) {
+        //         if (enableCors) {
+        //             defaults.middleware = function (req, res, next) {
+        //                 res.setHeader('Access-Control-Allow-Origin', '*');
+        //                 next();
+        //             }
+        //         }
+        //     });
+        // };
 
         if (typeof options['host'] !== 'undefined') {
             defaults.host = options['host'];
