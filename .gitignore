@@ -20,10 +20,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-dist/
-node_modules/
-platforms/
-plugins/
+/dist
+/node_modules
+/platforms
+/plugins
 package-lock.json
 yarn-lock.json
-www/
+/www
