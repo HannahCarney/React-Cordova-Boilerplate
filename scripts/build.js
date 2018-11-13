@@ -182,8 +182,8 @@ function build(previousFileSizes, context) {
         return bfj
           .write(paths.appBuild + '/bundle-stats.json', stats.toJson())
           .then(() => {
-            // var Prepare = require('./Prepare.js')
-            // new Prepare(context);
+            var Prepare = require('./Prepare.js')
+            new Prepare(context);
             // return resolve(resolveArgs)
             return resolve(resolveArgs);
           })
