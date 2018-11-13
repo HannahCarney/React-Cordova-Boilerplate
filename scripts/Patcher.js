@@ -12,17 +12,17 @@ var plist = require('plist');
 var WWW_FOLDER = {
     android: 'app/src/main/assets/www',
     ios: 'www',
-    browser:'www'
+    browser: 'www'
 };
 
 var CONFIG_LOCATION = {
     android: 'app/src/main/res/xml',
     ios: '.',
-    browser:'.'
+    browser: '.'
 };
 
 var START_PAGE = '../www/index.html';
- 
+
 function parseXml(filename) {
     return new et.ElementTree(et.XML(fs.readFileSync(filename, "utf-8").replace(/^\uFEFF/, "")));
 }
@@ -35,20 +35,20 @@ function Patcher(projectRoot, platforms) {
     this.platforms = platforms || ['android', 'ios'];
 }
 
-Patcher.prototype.__forEachFile = function(pattern, location, fn) {
-    this.platforms.forEach(function(platform) {
+Patcher.prototype.__forEachFile = function (pattern, location, fn) {
+    this.platforms.forEach(function (platform) {
         glob.sync(pattern, {
             cwd: path.join(this.projectRoot, 'platforms', platform, location[platform]),
             ignore: '*build/**'
-        }).forEach(function(filename) {
+        }).forEach(function (filename) {
             filename = path.join(this.projectRoot, 'platforms', platform, location[platform], filename);
             fn.apply(this, [filename, platform]);
         }, this);
     }, this);
 };
 
-Patcher.prototype.addCSP = function(opts) {
-    this.__forEachFile('**/index.html', WWW_FOLDER, function(filename, platform) {
+Patcher.prototype.addCSP = function (opts) {
+    this.__forEachFile('**/index.html', WWW_FOLDER, function (filename, platform) {
         var pageContent = fs.readFileSync(filename, 'utf-8');
         var $ = cheerio.load(pageContent, {
             decodeEntities: false
@@ -62,34 +62,36 @@ Patcher.prototype.addCSP = function(opts) {
                 policy.add('script-src', opts.servers[key]);
             }
         }
-        cspTag.attr('content', function() {
+        cspTag.attr('content', function () {
             return policy.toString();
         });
         fs.writeFileSync(filename, $.html());
-      //  console.log('Added CSP for ', filename);
+        //  console.log('Added CSP for ', filename);
     });
 };
 
-Patcher.prototype.copyStartPage = function(opts) {
-    var html = fs.readFileSync(path.join(__dirname, START_PAGE), 'utf-8');
-    this.__forEachFile('**/index.html', WWW_FOLDER, function(filename, platform) {
-        var dest = path.join(path.dirname(filename), START_PAGE);
-        var data = {};
-        for (var key in opts.servers) {
-            if (typeof opts.servers[key] !== 'undefined') {
-                data[key] = url.resolve(opts.servers[key], this.getWWWFolder(platform) + '/' + opts.index);
+Patcher.prototype.copyStartPage = function (opts) {
+    if (process.env.NODE_ENV === "production") {
+        var html = fs.readFileSync(path.join(__dirname, START_PAGE), 'utf-8');
+        this.__forEachFile('**/index.html', WWW_FOLDER, function (filename, platform) {
+            var dest = path.join(path.dirname(filename), START_PAGE);
+            var data = {};
+            for (var key in opts.servers) {
+                if (typeof opts.servers[key] !== 'undefined') {
+                    data[key] = url.resolve(opts.servers[key], this.getWWWFolder(platform) + '/' + opts.index);
+                }
             }
-        }
-        fs.writeFileSync(dest, html.replace(/__SERVERS__/, JSON.stringify(data)));
-      //  console.log('Copied start page ', opts.servers);
-    });
+            fs.writeFileSync(dest, html.replace(/__SERVERS__/, JSON.stringify(data)));
+            //  console.log('Copied start page ', opts.servers);
+        });
+    }
 };
 
-Patcher.prototype.updateConfigXml = function() {
-    return this.__forEachFile('**/config.xml', CONFIG_LOCATION, function(filename, platform) {
+Patcher.prototype.updateConfigXml = function () {
+    return this.__forEachFile('**/config.xml', CONFIG_LOCATION, function (filename, platform) {
         configXml = parseXml(filename);
         var contentTag = configXml.find('content[@src]');
-        if (contentTag) {
+        if (contentTag && process.env.NODE_ENV === "production") {
             contentTag.attrib.src = START_PAGE;
         }
         // Also add allow nav in case of
@@ -98,58 +100,62 @@ Patcher.prototype.updateConfigXml = function() {
         fs.writeFileSync(filename, configXml.write({
             indent: 4
         }), "utf-8");
-      //  console.log('Set start page for %s', filename);
+        //  console.log('Set start page for %s', filename);
     });
 };
 
-Patcher.prototype.updateManifestJSON = function() {
-    return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function(filename, platform) {
+Patcher.prototype.updateManifestJSON = function () {
+    return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
+        if (process.env.NODE_ENV === "production") {
         var manifest = require(filename);
         manifest.start_url = START_PAGE;
         fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
-       // console.log('Set start page for %s', filename)
+        // console.log('Set start page for %s', filename)
+        }
     });
 }
 
-Patcher.prototype.updateBrowser = function() {
-    return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function(filename, platform) {
+Patcher.prototype.updateBrowser = function () {
+    return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
         var manifest = require(filename);
-        manifest.start_url = START_PAGE;
-        fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
-       // console.log('Set start page for %s', filename)
+        if (process.env.NODE_ENV === "production") {
+            manifest.start_url = START_PAGE;
+            fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
+        }
+        // console.log('Set start page for %s', filename)
     });
 }
 
-Patcher.prototype.fixATS = function() {
-    return this.__forEachFile('**/*Info.plist', CONFIG_LOCATION, function(filename) {
+Patcher.prototype.fixATS = function () {
+    return this.__forEachFile('**/*Info.plist', CONFIG_LOCATION, function (filename) {
         try {
             var data = plist.parse(fs.readFileSync(filename, 'utf-8'));
             data.NSAppTransportSecurity = {
                 NSAllowsArbitraryLoads: true
             };
             fs.writeFileSync(filename, plist.build(data));
-           console.log('Fixed ATS in ', filename);
+            console.log('Fixed ATS in ', filename);
         } catch (err) {
             console.log('Error when parsing', filename, err);
         }
     });
 };
 
-Patcher.prototype.prepatch = function() {
+Patcher.prototype.prepatch = function () {
     // copy the serverless start page so initial load doesn't throw 404
     this.copyStartPage({});
     this.updateConfigXml();
     this.updateManifestJSON();
 }
 
-Patcher.prototype.patch = function(opts) {
+Patcher.prototype.patch = function (opts) {
     opts = opts || {};
     this.copyStartPage(opts);
     this.fixATS();
     this.addCSP(opts);
 };
 
-Patcher.prototype.getWWWFolder = function(platform) {
+Patcher.prototype.getWWWFolder = function (platform) {
     return path.join('platforms', platform, WWW_FOLDER[platform]);
 };
 

@@ -131,7 +131,7 @@ function async(context) {
 
 // Create the production build and print the deployment instructions.
 function build(previousFileSizes, context) {
-  console.log('Creating an optimized production build...');
+  console.log(`Creating a ${process.env.NODE_ENV} build...`);
 
   let compiler = webpack(config);
   return new Promise((resolve, reject) => {
