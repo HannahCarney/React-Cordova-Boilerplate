@@ -197,7 +197,7 @@ function deployToSim (appPath, target) {
 function startSim (appPath, target) {
     var logPath = path.join(cordovaPath, 'console.log');
 
-    return iossim.launch(appPath, 'com.apple.CoreSimulator.SimDeviceType.' + target, logPath);
+    return iossim.launch(appPath, 'com.apple.CoreSimulator.SimDeviceType.iPhone-X', logPath);
 }
 
 function listDevices () {

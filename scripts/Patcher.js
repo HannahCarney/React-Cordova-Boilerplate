@@ -128,7 +128,7 @@ Patcher.prototype.fixATS = function() {
                 NSAllowsArbitraryLoads: true
             };
             fs.writeFileSync(filename, plist.build(data));
-          //  console.log('Fixed ATS in ', filename);
+           console.log('Fixed ATS in ', filename);
         } catch (err) {
             console.log('Error when parsing', filename, err);
         }

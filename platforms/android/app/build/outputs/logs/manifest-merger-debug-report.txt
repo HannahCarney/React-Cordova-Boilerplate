@@ -45,13 +45,13 @@ ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/a
 application
 ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:5:5-12:19
 	android:supportsRtl
-		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:5:114-140
+		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:5:139-165
 	android:label
 		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:5:81-113
 	android:hardwareAccelerated
 		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:5:18-52
 	android:largeHeap
-		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:5:141-165
+		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:5:114-138
 	android:icon
 		ADDED from /Users/hannahcarney/Desktop/Programming/react-app/platforms/android/app/src/main/AndroidManifest.xml:5:53-80
 activity#com.example.app.MainActivity
