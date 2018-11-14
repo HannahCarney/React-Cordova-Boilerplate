@@ -21,7 +21,7 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 ## Running locally
 
 * `cordova run browser`
-* ß`cordova run android`
+* `cordova run android`
 * `cordova run ios`
 
 ## Environments
@@ -34,7 +34,7 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 
 * use the development flag for live reload
 
-Apache Docs for my info:
+Apache Docs for more info:
 
 https://cordova.apache.org/docs/en/2.8.0/guide/command-line/
 
