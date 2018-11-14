@@ -20,9 +20,9 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 
 ## Running locally
 
-run `cordova run browser`
-run `cordova run android`
-run `cordova run ios`
+* `cordova run browser`
+* ß`cordova run android`
+* `cordova run ios`
 
 ## Environments
 
