@@ -25,6 +25,6 @@ yarn-error.log*
 /plugins
 package-lock.json
 yarn-lock.json
-www/*
+/www/*/
 .vscode
 /typings
