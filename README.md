@@ -11,14 +11,18 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 
 * `npm install` 
 * `sudo npm install -g cordova`
-* `cordova platform add android`
 * `cordova platform add ios`
 * `cordova platform add browser`
-* `cordova build`
+* `cordova platform add android`
+
+* Note: Adding platforms will also run browser running the platform files project
+* You can escape with Ctrl+C
 
 ## Running locally
 
-run `cordova run android/ios/broswer`
+run `cordova run browser`
+run `cordova run android`
+run `cordova run ios`
 
 ## Environments
 
@@ -28,11 +32,10 @@ run `cordova run android/ios/broswer`
  `target=production cordova run ios`
  `target=development cordova run android`
 
-* use the -- --live-reload flag for live reloading
+* use the development flag for live reloading |(automatic)ß
 
 Apache Docs for my info:
 
 https://cordova.apache.org/docs/en/2.8.0/guide/command-line/
 
-`target=dev cordova run browser -- --live-relaod`
-`cordova run -- --live-reload --https`
+
