@@ -35,11 +35,13 @@ function monkeyPatch() {
  */
 module.exports = function(opts, cb) {
     opts = opts || {};
-  
+    if (BrowserSync.has("Hannah")) {
+        return BrowserSync.get("Hannah")
+    }
+    else {
         var bs = BrowserSync.create("Hannah");
         var defaults = {
             notify: false,
-            port: 5000,
             logFileChanges: true,
             logConnections: true,
             open: true,
@@ -55,7 +57,9 @@ module.exports = function(opts, cb) {
             watchOptions: {},
             files: [],
             cors: true,
-            https: false
+            https: false,
+        
+            // proxy: "localhost:8000"
         };
     
         if (typeof opts === 'function') {
@@ -73,11 +77,10 @@ module.exports = function(opts, cb) {
             var servers = {};
             ['local', 'external', 'tunnel'].forEach(function(type) {
                 servers[type] = urls.get(type);
-                
             });
             cb(err, servers);
         });
-      
         return bs;
     }
   
+};

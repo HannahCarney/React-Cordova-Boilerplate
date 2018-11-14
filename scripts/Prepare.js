@@ -117,7 +117,7 @@ function Prepare(context) {
         var theSourceFile = path.join(path.resolve()) + '/scripts/start.js';
         fs.readFile(theSourceFile, function (err, buf) {
             if (typeof buf !== 'undefined') {
-                var theDestinationFile = path.join(path.resolve()) + '/platforms/browser/cordova/lib/run.js';
+                var theDestinationFile = path.join(path.resolve()) + '/platforms/browser/lib/run.js';
                 fs.writeFile(theDestinationFile, buf.toString(), function (err) { });
             };
         });
@@ -126,9 +126,6 @@ function Prepare(context) {
 
 }
 
-module.exports = function (ctx) {
-    deferral = ctx.requireCordovaModule('q').defer();
-    Prepare(ctx);
-    return deferral.promise;
-  };
+module.exports = Prepare;
+
 
