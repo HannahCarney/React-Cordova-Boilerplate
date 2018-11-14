@@ -32,7 +32,6 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
  `target=production cordova run ios`
  `target=development cordova run android`
 
-* development is default
 * use the development flag for live reload
 
 Apache Docs for my info:
