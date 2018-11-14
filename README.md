@@ -32,7 +32,8 @@ run `cordova run ios`
  `target=production cordova run ios`
  `target=development cordova run android`
 
-* use the development flag for live reloading |(automatic)ß
+* development is default
+* use the development flag for live reload
 
 Apache Docs for my info:
 
