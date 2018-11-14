@@ -13,11 +13,11 @@ class App extends Component {
           </p>
           <a
             className="App-link"
-            href="https://reactjs.org"
+            href="hhttps://github.com/HannahCarney/React-Cordova-Boilerplate"
             target="_blank"
             rel="noopener noreferrer"
           >
-          djsh
+          Github repo
 
           </a>
         </header>
