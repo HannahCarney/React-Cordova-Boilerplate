@@ -28,8 +28,8 @@ function parseXml(filename) {
     return new et.ElementTree(et.XML(fs.readFileSync(filename, "utf-8").replace(/^\uFEFF/, "")));
 }
 
-function Patcher(projectRoot, platforms) {
-    this.projectRoot = projectRoot || '.';
+function Patcher(context, platforms) {
+    this.projectRoot = context.opts.projectRoot|| '.';
     if (typeof platforms === 'string') {
         platforms = platforms.split(',');
     }
