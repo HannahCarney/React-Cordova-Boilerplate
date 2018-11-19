@@ -33,7 +33,7 @@ function monkeyPatch() {
  * @param {Object} opts - Options Object to be passed to browserSync. If this is a function, the function is called with default values and should return the final options to be passed to browser-sync
  * @param {Function} cb - A callback when server is ready, calls with (err, servr_hostname)
  */
-module.exports = function(opts, cb) {
+module.exports = function(opts, context, cb) {
     opts = opts || {};
     if (BrowserSync.has("Hannah")) {
         return BrowserSync.get("Hannah")
@@ -44,7 +44,7 @@ module.exports = function(opts, cb) {
             notify: false,
             logFileChanges: true,
             logConnections: true,
-            open: true,
+            open: (context.opts.platforms[0] === "browser" || context.opts.options.argv["browser"]),
             snippetOptions: {
                 rule: {
                     match: /<\/body>/i,

@@ -39,7 +39,7 @@ function Prepare(context) {
     // TODO - Enable live reload servers
 
     var platforms = context.opts.platforms;
-    var patcher = new Patcher(context.opts.projectRoot, platforms);
+    var patcher = new Patcher(context, platforms);
     patcher.prepatch();
     var changesBuffer = [];
     var changesTimeout;
@@ -105,7 +105,7 @@ function Prepare(context) {
         }
 
         return defaults;
-    }, function (err, servers) {
+    }, context, function (err, servers) {
         if (err) {
             console.log(err);
             return deferral.reject()
