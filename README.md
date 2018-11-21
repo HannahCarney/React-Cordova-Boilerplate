@@ -1,7 +1,7 @@
 
 # React Boilerplate Cordova project
 
-A base project for starting new cordova apps. Contains a sane webpack setup, environmental config, redux, axios http client, routing, basic login screen, rollbar error reporting, eslint and CI/Deployment setup for bitbucket/S3.
+A base project for starting new cordova apps. Contains a sane webpack setup, environmental config, redux, axios http client, routing, basic login screen, rollbar error reporting, eslint and CI/Deployment setup for bitbucket/S3. Most importantly: Live reloading of Apps and browsers!
 
 ## Instructions for use
 
@@ -24,7 +24,7 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 * -- --l flag adds live reload to app or browser
 * `cordova run android -- --l`
 * `cordova run ios`
-* `cordova run ios -- --l`s
+* `cordova run ios -- --l`
 
 ## Environments
 
