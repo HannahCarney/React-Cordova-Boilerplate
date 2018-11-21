@@ -116,6 +116,10 @@ function Prepare(context) {
         return deferral.resolve();
     });
   }
+  else {
+    patcher.setConfig() 
+    return deferral.resolve();
+  }
 }
 
 module.exports = Prepare;
