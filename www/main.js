@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -380,17 +380,6 @@ eval("module.exports = __webpack_require__.p + \"static/media/logo.5d5d9eef.svg\
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return register; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"unregister\", function() { return unregister; });\n// In production, we register a service worker to serve assets from local cache.\n// This lets the app load faster on subsequent visits in production, and gives\n// it offline capabilities. However, it also means that developers (and users)\n// will only see deployed updates on the \"N+1\" visit to a page, since previously\n// cached resources are updated in the background.\n// To learn more about the benefits of this model, read https://goo.gl/KwvDNy.\n// This link also includes instructions on opting out of this behavior.\nvar isLocalhost=Boolean(window.location.hostname==='localhost'||// [::1] is the IPv6 localhost address.\nwindow.location.hostname==='[::1]'||// 127.0.0.1/8 is considered localhost for IPv4.\nwindow.location.hostname.match(/^127(?:\\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/));function register(){if(false){ var publicUrl; }}function registerValidSW(swUrl){navigator.serviceWorker.register(swUrl).then(function(registration){registration.onupdatefound=function(){var installingWorker=registration.installing;installingWorker.onstatechange=function(){if(installingWorker.state==='installed'){if(navigator.serviceWorker.controller){// At this point, the old content will have been purged and\n// the fresh content will have been added to the cache.\n// It's the perfect time to display a \"New content is\n// available; please refresh.\" message in your web app.\nconsole.log('New content is available; please refresh.');}else{// At this point, everything has been precached.\n// It's the perfect time to display a\n// \"Content is cached for offline use.\" message.\nconsole.log('Content is cached for offline use.');}}};};}).catch(function(error){console.error('Error during service worker registration:',error);});}function checkValidServiceWorker(swUrl){// Check if the service worker can be found. If it can't reload the page.\nfetch(swUrl).then(function(response){// Ensure service worker exists, and that we really are getting a JS file.\nif(response.status===404||response.headers.get('content-type').indexOf('javascript')===-1){// No service worker found. Probably a different app. Reload the page.\nnavigator.serviceWorker.ready.then(function(registration){registration.unregister().then(function(){window.location.reload();});});}else{// Service worker found. Proceed as normal.\nregisterValidSW(swUrl);}}).catch(function(){console.log('No internet connection found. App is running in offline mode.');});}function unregister(){if('serviceWorker'in navigator){navigator.serviceWorker.ready.then(function(registration){registration.unregister();});}}\n\n//# sourceURL=serviceWorker.js");
-
-/***/ }),
-
-/***/ 0:
-/*!****************************!*\
-  !*** multi ./src/index.js ***!
-  \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("module.exports = __webpack_require__(/*! /Users/hannahcarney/Desktop/Programming/react-app/src/index.js */\"./src/index.js\");\n\n\n//# sourceURL=../multi_/Users/hannahcarney/Desktop/Programming/react-app/src/index.js");
 
 /***/ })
 

@@ -94,8 +94,9 @@ Patcher.prototype.updateConfigXml = function () {
     return this.__forEachFile('**/config.xml', CONFIG_LOCATION, function (filename, platform) {
         configXml = parseXml(filename);
         var contentTag = configXml.find('content[@src]');
-        if (contentTag && this.options['l']) {
-            contentTag.attrib.src = EXTERNAL_URL;
+        console.log("Start page is: " + this.getWWWFolderIndex (platform));
+        if (contentTag) {
+            contentTag.attrib.src = this.options['l'] ? EXTERNAL_URL  : 'index.html';
         }
         // Also add allow nav in case of
         var allowNavTag = et.SubElement(configXml.find('.'), 'allow-navigation');
@@ -122,7 +123,7 @@ Patcher.prototype.updateManifestJSON = function () {
 Patcher.prototype.updateBrowser = function () {
     return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
         var manifest = require(filename);
-        if (!this.options['l']) {
+        if (this.options['l']) {
             manifest.start_url = START_PAGE;
         }
         fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
@@ -165,6 +166,10 @@ Patcher.prototype.patch = function (opts) {
 
 Patcher.prototype.getWWWFolder = function (platform) {
     return path.join('platforms', platform, WWW_FOLDER[platform]);
+};
+
+Patcher.prototype.getWWWFolderIndex = function (platform) {
+    return path.join('..','platforms', platform, WWW_FOLDER[platform], 'index.html');
 };
 
 module.exports = Patcher;
