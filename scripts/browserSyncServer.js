@@ -44,7 +44,7 @@ module.exports = function(opts, context, cb) {
             notify: false,
             logFileChanges: true,
             logConnections: true,
-            open: (context.opts.platforms[0] === "browser" || context.opts.options.argv["browser"]),
+            open: (context.opts.platforms[0] === "browser"),
             snippetOptions: {
                 rule: {
                     match: /<\/body>/i,
