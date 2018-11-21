@@ -121,6 +121,8 @@
     },
     "cordova": {
         "platforms": [
+            "android",
+            "ios",
             "browser"
         ],
         "plugins": {

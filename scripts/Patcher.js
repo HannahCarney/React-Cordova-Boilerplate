@@ -94,8 +94,8 @@ Patcher.prototype.updateConfigXml = function () {
     return this.__forEachFile('**/config.xml', CONFIG_LOCATION, function (filename, platform) {
         configXml = parseXml(filename);
         var contentTag = configXml.find('content[@src]');
-        if (contentTag) {
-            contentTag.attrib.src = !this.options['l'] ? START_PAGE : EXTERNAL_URL;
+        if (contentTag && this.options['l']) {
+            contentTag.attrib.src = EXTERNAL_URL;
         }
         // Also add allow nav in case of
         var allowNavTag = et.SubElement(configXml.find('.'), 'allow-navigation');
@@ -108,6 +108,7 @@ Patcher.prototype.updateConfigXml = function () {
 };
 
 Patcher.prototype.updateManifestJSON = function () {
+     console.log(START_PAGE)
     return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
         var manifest = require(filename);
         if (!this.options['l']) {

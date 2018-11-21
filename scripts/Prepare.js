@@ -44,6 +44,7 @@ function Prepare(context) {
     var changesBuffer = [];
     var changesTimeout;
     var serversFromCallback = [];
+    if (options['l']) {
     var bs = browserSyncServer(function (defaults) {
         if (enableCors) {
             defaults.middleware = function (req, res, next) {
@@ -56,7 +57,7 @@ function Prepare(context) {
             match: ['src/*.*'],
             fn: function (event, file) {
                 if (event === 'change') {
-                    // console.log('changexs')
+                   
 
                     changesBuffer.push(file);
                     if (changesTimeout) {
@@ -114,7 +115,7 @@ function Prepare(context) {
         patcher.setConfig(servers.external) 
         return deferral.resolve();
     });
-
+  }
 }
 
 module.exports = Prepare;
