@@ -24,11 +24,13 @@ var CONFIG_LOCATION = {
 var START_PAGE = '../www/index.html';
 var EXTERNAL_URL = '';
 
+
 function parseXml(filename) {
     return new et.ElementTree(et.XML(fs.readFileSync(filename, "utf-8").replace(/^\uFEFF/, "")));
 }
 
-function Patcher(context, platforms) {
+function Patcher(context, platforms, options) {
+    this.options = options;
     this.projectRoot = context.opts.projectRoot|| '.';
     if (typeof platforms === 'string') {
         platforms = platforms.split(',');
@@ -72,7 +74,7 @@ Patcher.prototype.addCSP = function (opts) {
 };
 
 Patcher.prototype.copyStartPage = function (opts) {
-    if (process.env.NODE_ENV == "production") {
+    if (!this.options['l']) {
         var html = fs.readFileSync(path.join(__dirname, START_PAGE), 'utf-8');
         this.__forEachFile('**/index.html', WWW_FOLDER, function (filename, platform) {
             var dest = path.join(path.dirname(filename), START_PAGE);
@@ -93,7 +95,7 @@ Patcher.prototype.updateConfigXml = function () {
         configXml = parseXml(filename);
         var contentTag = configXml.find('content[@src]');
         if (contentTag) {
-            contentTag.attrib.src = process.env.NODE_ENV == "production" ? START_PAGE : EXTERNAL_URL;
+            contentTag.attrib.src = !this.options['l'] ? START_PAGE : EXTERNAL_URL;
         }
         // Also add allow nav in case of
         var allowNavTag = et.SubElement(configXml.find('.'), 'allow-navigation');
@@ -108,7 +110,7 @@ Patcher.prototype.updateConfigXml = function () {
 Patcher.prototype.updateManifestJSON = function () {
     return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
         var manifest = require(filename);
-        if (process.env.NODE_ENV == "production") {
+        if (!this.options['l']) {
             manifest.start_url = START_PAGE;
         }
         fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
@@ -119,7 +121,7 @@ Patcher.prototype.updateManifestJSON = function () {
 Patcher.prototype.updateBrowser = function () {
     return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
         var manifest = require(filename);
-        if (process.env.NODE_ENV == "production") {
+        if (!this.options['l']) {
             manifest.start_url = START_PAGE;
         }
         fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");

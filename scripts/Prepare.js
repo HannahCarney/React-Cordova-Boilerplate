@@ -39,7 +39,7 @@ function Prepare(context) {
     // TODO - Enable live reload servers
 
     var platforms = context.opts.platforms;
-    var patcher = new Patcher(context, platforms);
+    var patcher = new Patcher(context, platforms, options);
     patcher.prepatch();
     var changesBuffer = [];
     var changesTimeout;

@@ -102,7 +102,7 @@ module.exports = {
   mode: 'development',
   // Don't attempt to continue if there are any errors.
   bail: true,
-  
+  entry: [paths.appIndexJs],
   output: {
     // The build folder.
     path: paths.appBuild,
