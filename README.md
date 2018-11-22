@@ -15,9 +15,6 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 * `cordova platform add browser`
 * `cordova platform add android`
 
-* Note: Adding platforms will also run browser running the platform files project
-* You can escape with Ctrl+C
-
 ## Running locally
 
 * `cordova run browser -- --l`
@@ -33,6 +30,8 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 
  `target=production cordova run ios`
  `target=development cordova run android`
+
+ * NOTE: currently only last IP connected to computer - so this may not work with more than one device plugged into a computer
 
 * use the development flag for live reload
 

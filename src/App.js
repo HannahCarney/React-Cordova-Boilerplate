@@ -13,7 +13,7 @@ class App extends Component {
           </p>
           <a
             className="App-link"
-            href="hhttps://github.com/HannahCarney/React-Cordova-Boilerplate"
+            href="https://github.com/HannahCarney/React-Cordova-Boilerplate"
             target="_blank"
             rel="noopener noreferrer"
           >

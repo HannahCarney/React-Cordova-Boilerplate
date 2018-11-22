@@ -38,8 +38,7 @@ if (fs.existsSync(theSourceFile)) {
             fs.writeFile(theDestinationFile, buf.toString(), function (err) {
                 console.log(chalk.green(`wrote env.${process.env.NODE_ENV} to env.js`))
                 const env = require('../config/env');
-
-                console.log(chalkRainbow(`You are running on the ${NODE_ENV} server:\n${env.API_URL}`))
+                console.log(chalkRainbow(`You have hit the ${NODE_ENV} API url:\n${env.API_URL}`))
 
                 console.log('-----------------------------');
             
