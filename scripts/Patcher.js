@@ -20,9 +20,8 @@ var CONFIG_LOCATION = {
     ios: '.',
     browser: '.'
 };
-
-var START_PAGE = '../www/index.html';
 var EXTERNAL_URL = '';
+
 
 
 function parseXml(filename) {
@@ -30,24 +29,19 @@ function parseXml(filename) {
 }
 
 function Patcher(context, platforms, options) {
+    this.platform = platforms[0];
     this.options = options;
     this.projectRoot = context.opts.projectRoot|| '.';
-    if (typeof platforms === 'string') {
-        platforms = platforms.split(',');
-    }
-    this.platforms = platforms || ['android', 'ios'];
 }
 
 Patcher.prototype.__forEachFile = function (pattern, location, fn) {
-    this.platforms.forEach(function (platform) {
         glob.sync(pattern, {
-            cwd: path.join(this.projectRoot, 'platforms', platform, location[platform]),
+            cwd: path.join(this.projectRoot, 'platforms', this.platform, location[this.platform]),
             ignore: '*build/**'
         }).forEach(function (filename) {
-            filename = path.join(this.projectRoot, 'platforms', platform, location[platform], filename);
-            fn.apply(this, [filename, platform]);
+            filename = path.join(this.projectRoot, 'platforms', this.platform, location[this.platform], filename);
+            fn.apply(this, [filename, this.platform]);
         }, this);
-    }, this);
 };
 
 Patcher.prototype.addCSP = function (opts) {
@@ -75,13 +69,13 @@ Patcher.prototype.addCSP = function (opts) {
 
 Patcher.prototype.copyStartPage = function (opts) {
     if (!this.options['l']) {
-        var html = fs.readFileSync(path.join(__dirname, START_PAGE), 'utf-8');
+        var html = fs.readFileSync(path.join(__dirname, this.getWWWFolderIndex (this.platform)), 'utf-8');
         this.__forEachFile('**/index.html', WWW_FOLDER, function (filename, platform) {
-            var dest = path.join(path.dirname(filename), START_PAGE);
+            var dest = path.join(path.dirname(filename), this.getWWWFolderIndex (platform));
             var data = {};
             for (var key in opts.servers) {
                 if (typeof opts.servers[key] !== 'undefined') {
-                    data[key] = url.resolve(opts.servers[key], this.getWWWFolder(platform) + '/' + opts.index);
+                    data[key] = url.resolve(opts.servers[key], this.getWWWFolder(this.platform) + '/' + opts.index);
                 }
             }
             fs.writeFileSync(dest, html.replace(/__SERVERS__/, JSON.stringify(data)));
@@ -94,8 +88,9 @@ Patcher.prototype.updateConfigXml = function () {
     return this.__forEachFile('**/config.xml', CONFIG_LOCATION, function (filename, platform) {
         configXml = parseXml(filename);
         var contentTag = configXml.find('content[@src]');
-        if (contentTag && this.options['l']) {
-            contentTag.attrib.src = EXTERNAL_URL;
+        console.log("Start page is: " + this.getWWWFolderIndex (platform));
+        if (contentTag) {
+            contentTag.attrib.src = this.options['l'] ? EXTERNAL_URL  : this.getWWWFolderIndex (platform);
         }
         // Also add allow nav in case of
         var allowNavTag = et.SubElement(configXml.find('.'), 'allow-navigation');
@@ -108,11 +103,11 @@ Patcher.prototype.updateConfigXml = function () {
 };
 
 Patcher.prototype.updateManifestJSON = function () {
-     console.log(START_PAGE)
+     console.log(this.getWWWFolderIndex (this.platform))
     return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
         var manifest = require(filename);
         if (!this.options['l']) {
-            manifest.start_url = START_PAGE;
+            manifest.start_url = this.getWWWFolderIndex (platform);
         }
         fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
         // console.log('Set start page for %s', filename)
@@ -122,8 +117,8 @@ Patcher.prototype.updateManifestJSON = function () {
 Patcher.prototype.updateBrowser = function () {
     return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
         var manifest = require(filename);
-        if (!this.options['l']) {
-            manifest.start_url = START_PAGE;
+        if (this.options['l']) {
+            manifest.start_url = this.getWWWFolderIndex (platform);
         }
         fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
         // console.log('Set start page for %s', filename)
@@ -165,6 +160,10 @@ Patcher.prototype.patch = function (opts) {
 
 Patcher.prototype.getWWWFolder = function (platform) {
     return path.join('platforms', platform, WWW_FOLDER[platform]);
+};
+
+Patcher.prototype.getWWWFolderIndex = function (platform) {
+    return  '../www/index.html';
 };
 
 module.exports = Patcher;

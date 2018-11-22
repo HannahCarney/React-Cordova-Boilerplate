@@ -2,6 +2,7 @@ var path = require('path');
 var fs = require('fs');
 
 var BrowserSync = require('browser-sync');
+var devip = require('dev-ip');
 
 /**
  * Private function that adds the code snippet to deal with reloading
@@ -44,6 +45,7 @@ module.exports = function(opts, context, cb) {
             notify: false,
             logFileChanges: true,
             logConnections: true,
+            host: devip().slice(-1)[0],
             open: (context.opts.platforms[0] === "browser"),
             snippetOptions: {
                 rule: {
