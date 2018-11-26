@@ -44,7 +44,7 @@ function Prepare(context) {
     var changesBuffer = [];
     var changesTimeout;
     var serversFromCallback = [];
-    if (options['l'] || context.opts.platforms[0] == "browser") {
+    if (options['l']) {
     var bs = browserSyncServer(function (defaults) {
         if (enableCors) {
             defaults.middleware = function (req, res, next) {
@@ -107,7 +107,7 @@ function Prepare(context) {
         }
 
         return defaults;
-    }, context, function (err, servers) {
+    }, context, options, function (err, servers) {
         if (err) {
             console.log(err);
             return deferral.reject()

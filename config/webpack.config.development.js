@@ -2,7 +2,6 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -108,12 +107,12 @@ module.exports = {
     filename: 'static/js/[name].[chunkhash:8].js',
     chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
     // We inferred the "public path" (such as / or /my-project) from homepage.
-    publicPath: '/',
+    publicPath: publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
-    // devtoolModuleFilenameTemplate: info =>
-    //   path
-    //     .relative(paths.appSrc, info.absoluteResourcePath)
-    //     .replace(/\\/g, '/'),
+    devtoolModuleFilenameTemplate: info =>
+      path
+        .relative(paths.appSrc, info.absoluteResourcePath)
+        .replace(/\\/g, '/'),
   },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
@@ -140,22 +139,12 @@ module.exports = {
       '@app-routes': path.resolve('./src/routes')
     },
     plugins: [
-      // Adds support for installing with Plug'n'Play, leading to faster installs and adding
-      // guards against forgotten dependencies and such.
-      PnpWebpackPlugin,
       // Prevents users from importing files from outside of src/ (or node_modules/).
       // This often causes confusion because we only process files within src/ with babel.
       // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
       new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
-    ],
-  },
-  resolveLoader: {
-    plugins: [
-      // Also related to Plug'n'Play, but this time it tells Webpack to load its loaders
-      // from the current package.
-      PnpWebpackPlugin.moduleLoader(module),
     ],
   },
   module: {

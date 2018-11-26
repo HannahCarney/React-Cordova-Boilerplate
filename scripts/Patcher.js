@@ -68,29 +68,28 @@ Patcher.prototype.addCSP = function (opts) {
 };
 
 Patcher.prototype.copyStartPage = function (opts) {
-    if (!this.options['l']) {
-        var html = fs.readFileSync(path.join(__dirname, this.getWWWFolderIndex (this.platform)), 'utf-8');
-        this.__forEachFile('**/index.html', WWW_FOLDER, function (filename, platform) {
-            var dest = path.join(path.dirname(filename), this.getWWWFolderIndex (platform));
-            var data = {};
-            for (var key in opts.servers) {
-                if (typeof opts.servers[key] !== 'undefined') {
-                    data[key] = url.resolve(opts.servers[key], this.getWWWFolder(this.platform) + '/' + opts.index);
-                }
-            }
-            fs.writeFileSync(dest, html.replace(/__SERVERS__/, JSON.stringify(data)));
-            //  console.log('Copied start page ', opts.servers);
-        });
-    }
+    // if (!this.options['l']) {
+    //     var html = fs.readFileSync(path.join(__dirname, this.getWWWFolderIndex (this.platform)), 'utf-8');
+    //     this.__forEachFile('**/index.html', WWW_FOLDER, function (filename, platform) {
+    //         var dest = path.join(path.dirname(filename), this.getWWWFolderIndex (platform));
+    //         var data = {};
+    //         for (var key in opts.servers) {
+    //             if (typeof opts.servers[key] !== 'undefined') {
+    //                 data[key] = url.resolve(opts.servers[key], this.getWWWFolder(this.platform) + '/' + opts.index);
+    //             }
+    //         }
+    //         fs.writeFileSync(dest, html.replace(/__SERVERS__/, JSON.stringify(data)));
+    //         //  console.log('Copied start page ', opts.servers);
+    //     });
+    // }
 };
 
 Patcher.prototype.updateConfigXml = function () {
     return this.__forEachFile('**/config.xml', CONFIG_LOCATION, function (filename, platform) {
         configXml = parseXml(filename);
         var contentTag = configXml.find('content[@src]');
-        console.log("Start page is: " + this.getWWWFolderIndex (platform));
         if (contentTag) {
-            contentTag.attrib.src = this.options['l'] ? EXTERNAL_URL  : this.getWWWFolderIndex (platform);
+            contentTag.attrib.src = this.options['l'] ? EXTERNAL_URL  :  '/';
         }
         // Also add allow nav in case of
         var allowNavTag = et.SubElement(configXml.find('.'), 'allow-navigation');
@@ -117,9 +116,9 @@ Patcher.prototype.updateManifestJSON = function () {
 Patcher.prototype.updateBrowser = function () {
     return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
         var manifest = require(filename);
-        if (this.options['l']) {
+        // if (this.options['l']) {
             manifest.start_url = this.getWWWFolderIndex (platform);
-        }
+        // }
         fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
         // console.log('Set start page for %s', filename)
     });

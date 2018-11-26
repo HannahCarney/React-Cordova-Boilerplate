@@ -22,6 +22,8 @@ var fs = require('fs');
 var path = require('path');
 var url = require('url');
 var cordovaServe = require('cordova-serve');
+
+module.exports.run = function (args) {
     // defaults
     args.port = args.port || 8000;
     args.target = args.target || 'default'; // make default the system browser
@@ -42,16 +44,13 @@ var cordovaServe = require('cordova-serve');
     }
 
     var server = cordovaServe();
-    server.servePlatform('browser', {port: args.port, noServerInfo: true})
+    server.servePlatform('browser', { port: args.port, noServerInfo: true })
         .then(function () {
-            if (!startPage) {
-                // failing all else, set the default
-                startPage = 'index.html';
+            var projectUrl = url.resolve('http://localhost:' + server.port, '/');
+            if (!args || !args.argv.includes('--l')) {
+                console.log('Static file server running @ ' + projectUrl + '\nCTRL + C to shut down');
+                return server.launchBrowser({ 'target': args.target, 'url': projectUrl });
             }
-            var projectUrl = url.resolve('http://localhost:' + server.port + '/', startPage);
-            console.log('startPage = ' + server.port);
-            // console.log('Static file server running @ ' + projectUrl + '\nCTRL + C to shut down');
-            // return server.launchBrowser({'target': args.target, 'url': projectUrl});
         })
         .catch(function (error) {
             console.log(error.message || error.toString());
@@ -59,3 +58,4 @@ var cordovaServe = require('cordova-serve');
                 server.server.close();
             }
         });
+};

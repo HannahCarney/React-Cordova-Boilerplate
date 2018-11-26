@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-    BrowserRouter as Router,
     Route,
     NavLink,
     HashRouter,
@@ -43,23 +42,6 @@ function Routes({ authState }) {
           </div>
         </HashRouter>
       );
-    // return (
-        // <Router>
-        //     <div className={classNames.join(' ')}>
-        //         <Route exact path="/" render={(props) => (
-        //             authState !== 'signedIn' ? (<div />) : (
-        //                 <Redirect to={{
-        //                     pathname: '/home',
-        //                     state: { from: props.location }
-        //                 }} />
-        //             )
-        //         )} />
-        //         <CrumbRoute title="Home" path="/home" component={Home} />
-        //         <CrumbRoute title="Item 1" path="/item1" component={Item1} />
-        //         <CrumbRoute title="Item 2" path="/item2" component={Item2} />
-        //     </div>
-        // </Router>
-    // );
 }
 
 Routes.propTypes = {

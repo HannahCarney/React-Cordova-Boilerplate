@@ -34,7 +34,7 @@ function monkeyPatch() {
  * @param {Object} opts - Options Object to be passed to browserSync. If this is a function, the function is called with default values and should return the final options to be passed to browser-sync
  * @param {Function} cb - A callback when server is ready, calls with (err, servr_hostname)
  */
-module.exports = function(opts, context, cb) {
+module.exports = function(opts, context, options, cb) {
     opts = opts || {};
     if (BrowserSync.has("Hannah")) {
         return BrowserSync.get("Hannah")

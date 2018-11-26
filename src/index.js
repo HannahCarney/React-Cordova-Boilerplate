@@ -1,18 +1,11 @@
 
-import React, { Component } from 'react';
-// import logo from './logo.s'
+import React from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
-import PropTypes from 'prop-types';
 import App from './App'
-import {Provider} from 'react-redux';
 import {persistStore} from 'redux-persist';
 import store from './store.js'
 import Api from './api.js';
-
-import Routes from './routes.js';
-
-import './styles/core.scss';
 
 Api._setStore(store);
 

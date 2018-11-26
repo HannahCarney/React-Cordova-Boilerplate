@@ -185,7 +185,7 @@ function build(previousFileSizes, context) {
           })
           .catch(error => reject(new Error(error)));
       }
-      return resolve(resolveArgs);
+      return resolveArgs ? resolve(resolveArgs) : resolve();
     });
   });
 }
