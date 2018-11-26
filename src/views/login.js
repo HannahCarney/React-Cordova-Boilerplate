@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 import Button from '../components/button.js';
 
-import {login, LOGIN} from '../redux/login.js';
+import {fakeLogin, LOGIN} from '../redux/login.js';
 
 function FormGroup({valid, children, ...props}) {
     let classnames = ['form-group'];
@@ -49,7 +49,7 @@ class ToggleablePasswordInput extends React.PureComponent {
 
 class LoginView extends React.PureComponent {
     static propTypes = {
-        login: PropTypes.func.isRequired,
+        fakeLogin: PropTypes.func.isRequired,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
             replace: PropTypes.func.isRequired
@@ -76,7 +76,8 @@ class LoginView extends React.PureComponent {
     onSubmitLogin = (e) => {
         e.preventDefault();
         if (this.validateForm()) {
-            this.props.login(this.state.username, this.state.password)
+            //fake login used for testing
+            this.props.fakeLogin(this.state.username, this.state.password)
                 .then(() => this.props.history.push('/'));
         }
     };
@@ -160,7 +161,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    login: (username, password) => dispatch(login(username, password))
+    fakeLogin: (username, password) => dispatch(fakeLogin(username, password))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);

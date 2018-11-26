@@ -54,7 +54,7 @@ function Prepare(context) {
         }
 
         defaults.files.push({
-            match: ['src/*/*.*'],
+            match: ['src/*/*.*', 'src/*'],
             fn: function (event, file) {
                 if (event === 'change') {
             

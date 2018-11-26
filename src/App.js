@@ -9,9 +9,11 @@ import Routes from './routes.js';
 import './styles/core.scss';
 
 export default function App({store}) {
+
+
     return (
         <Provider store={store}>
-            <Routes authState={'signedIn'}/>
+            <Routes/>
         </Provider>
     );
 }
