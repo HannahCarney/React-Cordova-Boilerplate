@@ -38,7 +38,7 @@ class Logout extends React.PureComponent {
     e.preventDefault();
     //fake logout used for testing
     this.props.logout()
-      .then(() => this.props.history.push('/'));
+    this.props.history.push('/');
   }
 };
 
