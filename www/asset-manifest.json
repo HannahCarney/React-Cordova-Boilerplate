@@ -1,10 +1,9 @@
 {
-  "main.css": "./static/css/main.02e67676.css",
-  "main.js": "./static/js/main.c649635c.js",
-  "main.css.map": "./static/css/main.02e67676.css.map",
-  "main.js.map": "./static/js/main.c649635c.js.map",
-  "index.html": "./index.html",
-  "precache-manifest.c4f977c14eec0eaaa640e528844418af.js": "./precache-manifest.c4f977c14eec0eaaa640e528844418af.js",
+  "main.css": "./static/css/main.7ac34660.css",
+  "main.js": "./static/js/main.45fe089a.js",
+  "main.css.map": "./static/css/main.7ac34660.css.map",
+  "main.js.map": "./static/js/main.45fe089a.js.map",
+  "precache-manifest.55853b926adc45574930141504a4de2d.js": "./precache-manifest.55853b926adc45574930141504a4de2d.js",
   "service-worker.js": "./service-worker.js",
   "static/media/logo.svg": "./static/media/logo.5d5d9eef.svg"
 }

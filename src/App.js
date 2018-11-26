@@ -1,29 +1,20 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import PropTypes from 'prop-types';
+import {Provider} from 'react-redux';
 
-class App extends Component {
-  render() {
+import Routes from './routes.js';
+
+import './styles/core.scss';
+
+export default function App({store}) {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code>
-          </p>
-          <a
-            className="App-link"
-            href="https://github.com/HannahCarney/React-Cordova-Boilerplate"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-          Github repo
-
-          </a>
-        </header>
-      </div>
+        <Provider store={store}>
+            <Routes />
+        </Provider>
     );
-  }
 }
-
-export default App;
+App.propTypes = {
+    store: PropTypes.object.isRequired
+};
