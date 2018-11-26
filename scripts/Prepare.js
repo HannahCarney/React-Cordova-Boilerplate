@@ -44,11 +44,7 @@ function Prepare(context) {
     var changesBuffer = [];
     var changesTimeout;
     var serversFromCallback = [];
-<<<<<<< HEAD
     if (options['l'] || context.opts.platforms[0] == "browser") {
-=======
-    if (options['l']) {
->>>>>>> f1d3c5307082537e71f429fb09008db4e5651a83
     var bs = browserSyncServer(function (defaults) {
         if (enableCors) {
             defaults.middleware = function (req, res, next) {
