@@ -25,6 +25,14 @@ yarn-error.log*
 /plugins
 package-lock.json
 yarn-lock.json
+<<<<<<< HEAD
 /www/*/
+=======
+# exclude everything
+www/*
+
+# exception to the rule
+!www/.gitkeep 
+>>>>>>> f1d3c5307082537e71f429fb09008db4e5651a83
 .vscode
 /typings

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from 'react';
 // import logo from './logo.s'
 import ReactDOM from 'react-dom';
@@ -41,3 +42,22 @@ if (window.cordova) {
 App.propTypes = {
     store: PropTypes.object.isRequired
 };
+=======
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './serviceWorker';
+
+const startApp = () => {
+  ReactDOM.render(<App />, document.getElementById('root'));
+  registerServiceWorker();
+};
+
+if(window.cordova) {
+  document.addEventListener('deviceready', startApp, false);
+} else {
+  startApp();
+}
+>>>>>>> f1d3c5307082537e71f429fb09008db4e5651a83
