@@ -1,52 +1,83 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  BrowserRouter as Router,
-  Route,
-  Redirect
+    BrowserRouter as Router,
+    Route,
+    NavLink,
+    HashRouter,
+    Redirect
 } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Breadcrumb } from 'react-breadcrumbs';
+import Home from './views/home.js';
+import Item1 from './views/item1.js';
+import Item2 from './views/item2.js';
 
-import {connect} from 'react-redux';
-
-import LoginView from './views/login.js';
-import HomeView from './views/home.js';
-
-const PrivateRoute = ({ component, authenticated, ...rest }) => {
+export const CrumbRoute = ({ component, includeSearch = false, render, ...props }) => {
+    let Component = component;
     return (
-        <Route {...rest} render={(props) => (
-            authenticated ? React.createElement(component, props) : (
-                <Redirect to={{
-                    pathname: '/login',
-                    state: { from: props.location }
-                }}/>
-            )
-        )}/>
+        <Route {...props} render={routeProps => (
+            <Breadcrumb data={{
+                title: props.title,
+                pathname: routeProps.match.url,
+                search: includeSearch ? routeProps.location.search : null
+            }}>
+                {Component ? <Component {...routeProps} /> : render(routeProps)}
+            </Breadcrumb>
+        )} />
     );
 };
-
-PrivateRoute.propTypes = {
-    component: PropTypes.func.isRequired,
-    authenticated: PropTypes.bool.isRequired,
-    location: PropTypes.string
+CrumbRoute.propTypes = {
+    object: PropTypes.object,
+    component: PropTypes.func,
+    includeSearch: PropTypes.bool,
+    render: PropTypes.func
 };
 
-function Routes({authenticated}) {
+function Routes({ authState }) {
+    //container
+
     return (
-        <Router>
-            <div className="container">
-                <Route path="/login" component={LoginView} />
-                <PrivateRoute exact path="/" component={HomeView} authenticated={authenticated} />
-            </div>
-        </Router>
-    );
+        <HashRouter>
+          <div>
+            <h1>Simple SPA</h1>
+            <ul className="header">
+            <li><NavLink to="/">Home</NavLink></li>
+            <li><NavLink to="/item1">Stuff</NavLink></li>
+            <li><NavLink to="/item2">Contact</NavLink></li>
+            </ul>
+            <div className="content">
+            <Route path="/" component={Home}/>
+            <Route path="/item1" component={Item1}/>
+            <Route path="/item2" component={Item2}/>
+          </div>
+          </div>
+        </HashRouter>
+      );
+    // return (
+        // <Router>
+        //     <div className={classNames.join(' ')}>
+        //         <Route exact path="/" render={(props) => (
+        //             authState !== 'signedIn' ? (<div />) : (
+        //                 <Redirect to={{
+        //                     pathname: '/home',
+        //                     state: { from: props.location }
+        //                 }} />
+        //             )
+        //         )} />
+        //         <CrumbRoute title="Home" path="/home" component={Home} />
+        //         <CrumbRoute title="Item 1" path="/item1" component={Item1} />
+        //         <CrumbRoute title="Item 2" path="/item2" component={Item2} />
+        //     </div>
+        // </Router>
+    // );
 }
 
 Routes.propTypes = {
-    authenticated: PropTypes.bool.isRequired
+    authState: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    authenticated: !!state.login.token
 });
 
 export default connect(mapStateToProps)(Routes);

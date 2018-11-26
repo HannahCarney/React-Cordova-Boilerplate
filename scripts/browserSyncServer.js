@@ -45,6 +45,13 @@ module.exports = function(opts, context, cb) {
             notify: false,
             logFileChanges: true,
             logConnections: true,
+            host: '/',
+            server: {
+                baseDir: "./",
+                routes: {
+                    "/home": "/"
+                }
+            },
             host: devip().slice(-1)[0],
             open: (context.opts.platforms[0] === "browser"),
             snippetOptions: {

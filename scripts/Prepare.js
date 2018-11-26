@@ -54,10 +54,10 @@ function Prepare(context) {
         }
 
         defaults.files.push({
-            match: ['src/*.*'],
+            match: ['src/*/*.*'],
             fn: function (event, file) {
                 if (event === 'change') {
-                   
+            
 
                     changesBuffer.push(file);
                     if (changesTimeout) {
@@ -70,6 +70,7 @@ function Prepare(context) {
                                 servers: serversFromCallback, //need this for building proper CSP
                             });
                               console.info("changesBuffer:" + changesBuffer);
+                              console.log(serversFromCallback)
                             bs.reload();
                             //  bs.reloadWindow();
                             //   window.location.reload(true);

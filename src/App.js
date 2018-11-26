@@ -11,7 +11,7 @@ import './styles/core.scss';
 export default function App({store}) {
     return (
         <Provider store={store}>
-            <Routes />
+            <Routes authState={'signedIn'}/>
         </Provider>
     );
 }
