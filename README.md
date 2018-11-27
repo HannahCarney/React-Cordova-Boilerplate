@@ -17,11 +17,25 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 
 ## Running locally
 
-* `cordova run browser`
+* To build the app to your phone permanently:
+
+* `cordova run ios`
+* `cordova run android`
+
+* NOTE: this is what the app will look like when live
+
+* To build the app to your phone/browser for development purposes using hot reloading:
+
 * -- --l flag adds live reload to app or browser
+* States will be saved using redux
+
 * `cordova run browser -- --l`
 * `cordova run android -- --l`
 * `cordova run ios -- --l`
+
+ * NOTE: currently only last IP connected to computer - so hot reloading may not work with more than one device plugged into a computer
+ * NOTE: on android and iOS certain functionality may not work - this flag is to be used for fast development, but builds should be made without this flag for likeness to real app functionality.
+
 
 ## Environments
 
@@ -31,7 +45,6 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
  `target=production cordova run ios`
  `target=development cordova run android`
 
- * NOTE: currently only last IP connected to computer - so this may not work with more than one device plugged into a computer
 
 * use the development flag for live reload
 

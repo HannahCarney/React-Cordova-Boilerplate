@@ -128,7 +128,7 @@ class LoginView extends React.PureComponent {
         return (
             <div className="view login-view">
                 <form className="login-form panel" onSubmit={this.onSubmitLogin}>
-                    <h2>Log in</h2>
+                    <h2>Log in to {process.env.NODE_ENV}</h2>
                     <FormGroup valid={!this.state.errors.username && !this.props.networkErrored}>
                         <span className="fa fa-envelope" />
                         <input className="form-control" placeholder="Email" value={this.state.username} onChange={this.onChangeUsername} />

@@ -89,7 +89,7 @@ Patcher.prototype.updateConfigXml = function () {
         configXml = parseXml(filename);
         var contentTag = configXml.find('content[@src]');
         if (contentTag) {
-            contentTag.attrib.src = this.options['l'] ? EXTERNAL_URL  :  '/';
+            contentTag.attrib.src = this.options['l'] ? EXTERNAL_URL  :  '/index.html';
         }
         // Also add allow nav in case of
         var allowNavTag = et.SubElement(configXml.find('.'), 'allow-navigation');
@@ -114,29 +114,29 @@ Patcher.prototype.updateManifestJSON = function () {
 }
 
 Patcher.prototype.updateBrowser = function () {
-    return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
-        var manifest = require(filename);
-        // if (this.options['l']) {
-            manifest.start_url = this.getWWWFolderIndex (platform);
-        // }
-        fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
-        // console.log('Set start page for %s', filename)
-    });
+    // return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
+    //     var manifest = require(filename);
+    //     // if (this.options['l']) {
+    //         manifest.start_url = this.getWWWFolderIndex (platform);
+    //     // }
+    //     fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
+    //     // console.log('Set start page for %s', filename)
+    // });
 }
 
 Patcher.prototype.fixATS = function () {
-    return this.__forEachFile('**/*Info.plist', CONFIG_LOCATION, function (filename) {
-        try {
-            var data = plist.parse(fs.readFileSync(filename, 'utf-8'));
-            data.NSAppTransportSecurity = {
-                NSAllowsArbitraryLoads: true
-            };
-            fs.writeFileSync(filename, plist.build(data));
-            console.log('Fixed ATS in ', filename);
-        } catch (err) {
-            console.log('Error when parsing', filename, err);
-        }
-    });
+    // return this.__forEachFile('**/*Info.plist', CONFIG_LOCATION, function (filename) {
+    //     try {
+    //         var data = plist.parse(fs.readFileSync(filename, 'utf-8'));
+    //         data.NSAppTransportSecurity = {
+    //             NSAllowsArbitraryLoads: true
+    //         };
+    //         fs.writeFileSync(filename, plist.build(data));
+    //         console.log('Fixed ATS in ', filename);
+    //     } catch (err) {
+    //         console.log('Error when parsing', filename, err);
+    //     }
+    // });
 };
 
 Patcher.prototype.prepatch = function () {
