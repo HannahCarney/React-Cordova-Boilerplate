@@ -102,15 +102,15 @@ Patcher.prototype.updateConfigXml = function () {
 };
 
 Patcher.prototype.updateManifestJSON = function () {
-     console.log(this.getWWWFolderIndex (this.platform))
-    return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
-        var manifest = require(filename);
-        if (!this.options['l']) {
-            manifest.start_url = this.getWWWFolderIndex (platform);
-        }
-        fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
-        // console.log('Set start page for %s', filename)
-    });
+    //  console.log(this.getWWWFolderIndex (this.platform))
+    // return this.__forEachFile('**/manifest.json', CONFIG_LOCATION, function (filename, platform) {
+    //     var manifest = require(filename);
+    //     if (!this.options['l']) {
+    //         manifest.start_url = this.getWWWFolderIndex (platform);
+    //     }
+    //     fs.writeFileSync(filename, JSON.stringify(manifest, null, 2), "utf-8");
+    //     // console.log('Set start page for %s', filename)
+    // });
 }
 
 Patcher.prototype.updateBrowser = function () {

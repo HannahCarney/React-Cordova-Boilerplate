@@ -18,7 +18,7 @@
         "cheerio": "^1.0.0-rc.2",
         "cordova-android": "7.1.2",
         "cordova-browser": "^5.0.4",
-        "cordova-ios": "4.5.5",
+        "cordova-ios": "^4.5.5",
         "cordova-serve": "2.0.1",
         "csp-parse": "0.0.2",
         "css-loader": "^1.0.1",
@@ -126,8 +126,8 @@
     "cordova": {
         "platforms": [
             "android",
-            "ios",
-            "browser"
+            "browser",
+            "ios"
         ],
         "plugins": {}
     },
