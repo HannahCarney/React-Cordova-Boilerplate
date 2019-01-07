@@ -11,6 +11,7 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 
 * `npm install` 
 * `sudo npm install -g cordova`
+* `mkdir www` (creates the cordova build folder)
 * `cordova platform add ios`
 * `cordova platform add browser`
 * `cordova platform add android`
@@ -31,7 +32,7 @@ A base project for starting new cordova apps. Contains a sane webpack setup, env
 
 * `cordova run browser -- --l`
 * `cordova run android -- --l`
-* `cordova run ios -- --l`
+* `cordova run ios -- --l --buildFlag="-UseModernBuildSystem=0"`
 
  * NOTE: currently only last IP connected to computer - so hot reloading may not work with more than one device plugged into a computer
  * NOTE: on android and iOS certain functionality may not work - this flag is to be used for fast development, but builds should be made without this flag for likeness to real app functionality.
